@@ -28,7 +28,7 @@ export const QrCardBack = forwardRef<HTMLDivElement, QrCardBackProps>(function Q
   return (
     <div
       ref={ref}
-      className={cn("relative overflow-hidden p-2", className)}
+      className={cn("relative overflow-hidden p-2 tracking-[-0.07em]", className)}
       style={{
         width: CARD_WIDTH,
         height: CARD_HEIGHT,
@@ -55,7 +55,7 @@ export const QrCardBack = forwardRef<HTMLDivElement, QrCardBackProps>(function Q
                 aria-hidden="true"
               />
               <span
-                className="text-[10px] font-medium uppercase tracking-[0.22em]"
+                className="text-[10px] font-medium uppercase"
                 style={{ color: tokens.mutedForeground }}
               >
                 {eventName}
