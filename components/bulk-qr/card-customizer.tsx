@@ -10,9 +10,19 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 interface CardCustomizerProps {
   config: CardConfig
   onChange: (next: CardConfig) => void
+  /**
+   * Fired when the user focuses the event-name field. Used by the parent to
+   * automatically flip the card preview to the back, since that's where the
+   * event name appears.
+   */
+  onEventNameFocus?: () => void
 }
 
-export function CardCustomizer({ config, onChange }: CardCustomizerProps) {
+export function CardCustomizer({
+  config,
+  onChange,
+  onEventNameFocus,
+}: CardCustomizerProps) {
   return (
     <FieldGroup>
       <Field>
@@ -101,6 +111,7 @@ export function CardCustomizer({ config, onChange }: CardCustomizerProps) {
           maxLength={48}
           value={config.eventName}
           onChange={(event) => onChange({ ...config, eventName: event.target.value })}
+          onFocus={onEventNameFocus}
         />
         <FieldDescription>
           Appears on the back of every card. Leave empty to hide it.

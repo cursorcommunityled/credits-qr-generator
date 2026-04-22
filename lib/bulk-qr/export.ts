@@ -1,13 +1,32 @@
 import { toPng } from "html-to-image"
 import JSZip from "jszip"
 
-const EXPORT_SCALE = 3
+/** Default raster scale used for PNG exports (ZIP). */
+export const EXPORT_SCALE = 3
 
-export async function nodeToPngBlob(node: HTMLElement): Promise<Blob> {
+/**
+ * Higher raster scale used for print-ready PDF exports, so a card printed at
+ * its real-world size still resolves to ~300 DPI on paper.
+ */
+export const PRINT_SCALE = 4
+
+export interface RenderNodeOptions {
+  /** html-to-image pixelRatio. Defaults to {@link EXPORT_SCALE}. */
+  pixelRatio?: number
+}
+
+export async function nodeToPngBlob(
+  node: HTMLElement,
+  options: RenderNodeOptions = {},
+): Promise<Blob> {
+  // NOTE: do not pass `backgroundColor` here. html-to-image applies that option
+  // as an inline style on the cloned root AFTER copying computed styles, which
+  // would overwrite the card's own outer frame color (tokens.background) and
+  // cause the export to drop the darker outer frame, leaving only the inner
+  // container. The card root already paints its own full-bleed background.
   const dataUrl = await toPng(node, {
-    pixelRatio: EXPORT_SCALE,
+    pixelRatio: options.pixelRatio ?? EXPORT_SCALE,
     cacheBust: true,
-    backgroundColor: "transparent",
   })
   const res = await fetch(dataUrl)
   return res.blob()

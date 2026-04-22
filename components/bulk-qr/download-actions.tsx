@@ -22,6 +22,7 @@ import {
   type CardAsset,
 } from "@/lib/bulk-qr/export"
 import type { CardConfig, RedeemCode } from "@/lib/bulk-qr/types"
+import { PdfExportDialog } from "./pdf-export-dialog.lazy"
 
 interface DownloadActionsProps {
   codes: RedeemCode[]
@@ -135,6 +136,13 @@ export function DownloadActions({
           <Download className="h-4 w-4" aria-hidden="true" />
           Download back
         </Button>
+        <PdfExportDialog
+          codes={codes}
+          config={config}
+          getFrontNode={getFrontNode}
+          getBackNode={getBackNode}
+          externallyDisabled={isWorking}
+        />
       </div>
 
       {isWorking ? (

@@ -3,7 +3,7 @@
 import { useMemo, useRef, useState } from "react"
 import { QrCode as QrCodeIcon, Sparkles } from "lucide-react"
 import { CardCustomizer } from "./card-customizer"
-import { CardPreview } from "./card-preview"
+import { CardPreview, type CardFace } from "./card-preview"
 import { CsvUploader } from "./csv-uploader"
 import { DownloadActions } from "./download-actions"
 import { ExportStage, type ExportStageHandle } from "./export-stage"
@@ -22,6 +22,7 @@ export function BulkQrGenerator() {
   const [codes, setCodes] = useState<RedeemCode[]>([])
   const [fileName, setFileName] = useState<string | null>(null)
   const [config, setConfig] = useState<CardConfig>(DEFAULT_CONFIG)
+  const [previewFace, setPreviewFace] = useState<CardFace>("front")
   const stageRef = useRef<ExportStageHandle | null>(null)
 
   const stats = useMemo(
@@ -84,7 +85,11 @@ export function BulkQrGenerator() {
               icon={<Sparkles className="h-3.5 w-3.5" aria-hidden="true" />}
               label="2. Customize"
             />
-            <CardCustomizer config={config} onChange={setConfig} />
+            <CardCustomizer
+              config={config}
+              onChange={setConfig}
+              onEventNameFocus={() => setPreviewFace("back")}
+            />
           </section>
 
           <section className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-4">
@@ -106,7 +111,12 @@ export function BulkQrGenerator() {
         </aside>
 
         <div className="flex flex-col gap-6">
-          <CardPreview codes={codes} config={config} />
+          <CardPreview
+            codes={codes}
+            config={config}
+            face={previewFace}
+            onFaceChange={setPreviewFace}
+          />
           {stats.ready ? <CodesList codes={codes} /> : null}
         </div>
       </div>
