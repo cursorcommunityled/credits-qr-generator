@@ -1,4 +1,4 @@
-export type CardLocale = "en" | "es"
+export type CardLocale = 'en' | 'es'
 
 /**
  * All strings printed on the card. Kept here so the card components stay
@@ -19,21 +19,21 @@ export interface CardCopy {
 
 const COPY: Record<CardLocale, CardCopy> = {
   en: {
-    eyebrow: "Cursor credits",
-    headline: "Scan to redeem",
+    eyebrow: 'Cursor credits',
+    headline: 'Scan to redeem',
     steps: {
-      scan: "Scan the QR.",
-      signIn: "Sign in (personal account, not Team).",
-      redeem: "Redeem — applies to your next invoice.",
+      scan: 'Scan the QR.',
+      signIn: 'Sign in (personal account, not Team).',
+      redeem: 'Redeem — applies to your next invoice.',
     },
   },
   es: {
-    eyebrow: "Créditos de Cursor",
-    headline: "Escanea para canjear",
+    eyebrow: 'Créditos de Cursor',
+    headline: 'Escanea para canjear',
     steps: {
-      scan: "Escanea el QR.",
-      signIn: "Inicia sesión (cuenta personal, no Team).",
-      redeem: "Canjéalo — se aplica a tu próxima factura.",
+      scan: 'Escanea el QR.',
+      signIn: 'Inicia sesión (cuenta personal, no Team).',
+      redeem: 'Canjéalo — se aplica a tu próxima factura.',
     },
   },
 }
@@ -47,6 +47,6 @@ export const CARD_LOCALE_OPTIONS: ReadonlyArray<{
   label: string
   ariaLabel: string
 }> = [
-  { value: "en", label: "EN", ariaLabel: "English" },
-  { value: "es", label: "ES", ariaLabel: "Spanish (Mexico)" },
+  { value: 'en', label: 'EN', ariaLabel: 'English' },
+  { value: 'es', label: 'ES', ariaLabel: 'Spanish (Mexico)' },
 ]

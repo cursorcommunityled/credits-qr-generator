@@ -1,4 +1,4 @@
-import { BulkQrGenerator } from "@/components/bulk-qr/bulk-qr-generator"
+import { BulkQrGenerator } from '@/components/bulk-qr/bulk-qr-generator'
 
 export default function Page() {
   return (

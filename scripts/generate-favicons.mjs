@@ -47,19 +47,19 @@ async function main() {
   // Light OS theme -> dark icon
   await renderPng(
     buildSvg({ size: 32, bg: '#000000', fg: '#ffffff' }),
-    resolve(publicDir, 'icon-light-32x32.png')
+    resolve(publicDir, 'icon-light-32x32.png'),
   )
 
   // Dark OS theme -> light icon
   await renderPng(
     buildSvg({ size: 32, bg: '#ffffff', fg: '#000000' }),
-    resolve(publicDir, 'icon-dark-32x32.png')
+    resolve(publicDir, 'icon-dark-32x32.png'),
   )
 
   // Apple touch icon (180x180, dark background for iOS home screen contrast)
   await renderPng(
     buildSvg({ size: 180, bg: '#000000', fg: '#ffffff' }),
-    resolve(publicDir, 'apple-icon.png')
+    resolve(publicDir, 'apple-icon.png'),
   )
 }
 

@@ -1,6 +1,6 @@
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Badge } from "@/components/ui/badge"
-import type { RedeemCode } from "@/lib/bulk-qr/types"
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Badge } from '@/components/ui/badge'
+import type { RedeemCode } from '@/lib/bulk-qr/types'
 
 interface CodesListProps {
   codes: RedeemCode[]
@@ -18,14 +18,13 @@ export function CodesList({ codes }: CodesListProps) {
       <ScrollArea className="h-[220px]">
         <ol className="divide-y divide-border text-xs">
           {codes.map((code, index) => (
-            <li
-              key={code.id}
-              className="flex items-center gap-3 px-4 py-2.5"
-            >
+            <li key={code.id} className="flex items-center gap-3 px-4 py-2.5">
               <span className="w-6 shrink-0 text-right font-mono tabular-nums text-muted-foreground">
-                {String(index + 1).padStart(2, "0")}
+                {String(index + 1).padStart(2, '0')}
               </span>
-              <span className="truncate font-mono text-foreground">{code.url}</span>
+              <span className="truncate font-mono text-foreground">
+                {code.url}
+              </span>
               <span className="ml-auto shrink-0 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
                 {code.code.slice(0, 14)}
               </span>

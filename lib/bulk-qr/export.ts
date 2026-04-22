@@ -1,5 +1,5 @@
-import { toPng } from "html-to-image"
-import JSZip from "jszip"
+import { toPng } from 'html-to-image'
+import JSZip from 'jszip'
 
 /** Default raster scale used for PNG exports (ZIP). */
 export const EXPORT_SCALE = 3
@@ -39,16 +39,16 @@ export interface CardAsset {
 
 export async function zipCards(assets: CardAsset[]): Promise<Blob> {
   const zip = new JSZip()
-  const fronts = zip.folder("fronts")
+  const fronts = zip.folder('fronts')
   for (const asset of assets) {
     fronts?.file(asset.fileName, asset.blob)
   }
-  return zip.generateAsync({ type: "blob" })
+  return zip.generateAsync({ type: 'blob' })
 }
 
 export function triggerDownload(blob: Blob, fileName: string) {
   const url = URL.createObjectURL(blob)
-  const link = document.createElement("a")
+  const link = document.createElement('a')
   link.href = url
   link.download = fileName
   document.body.appendChild(link)
@@ -60,7 +60,7 @@ export function triggerDownload(blob: Blob, fileName: string) {
 export function sanitizeFileSegment(value: string): string {
   return value
     .toLowerCase()
-    .replace(/[^a-z0-9-_]+/g, "-")
-    .replace(/^-+|-+$/g, "")
+    .replace(/[^a-z0-9-_]+/g, '-')
+    .replace(/^-+|-+$/g, '')
     .slice(0, 40)
 }

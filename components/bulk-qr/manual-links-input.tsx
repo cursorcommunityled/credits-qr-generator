@@ -1,10 +1,10 @@
-"use client"
+'use client'
 
-import { Link2, X } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import { Link2, X } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
 
 interface ManualLinksInputProps {
   value: string
@@ -31,8 +31,8 @@ export function ManualLinksInput({
           <div className="flex flex-col gap-1">
             <Label htmlFor="manual-links">Optional manual links</Label>
             <p className="text-xs text-muted-foreground">
-              Paste one full redeem URL per line. We&apos;ll combine them with any
-              uploaded CSV file.
+              Paste one full redeem URL per line. We&apos;ll combine them with
+              any uploaded CSV file.
             </p>
           </div>
         </div>
@@ -41,7 +41,7 @@ export function ManualLinksInput({
             type="button"
             variant="ghost"
             size="sm"
-            onClick={() => onChange("")}
+            onClick={() => onChange('')}
             aria-label="Clear manual links"
           >
             <X className="h-4 w-4" aria-hidden="true" />
@@ -64,14 +64,15 @@ export function ManualLinksInput({
 
       <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
         <Badge variant="secondary" className="font-mono tabular-nums">
-          {codeCount} {codeCount === 1 ? "manual link" : "manual links"}
+          {codeCount} {codeCount === 1 ? 'manual link' : 'manual links'}
         </Badge>
         <span>Use this on its own or alongside a CSV upload.</span>
       </div>
 
       {skippedCount > 0 ? (
         <p role="status" className="text-xs text-destructive">
-          Ignoring {skippedCount} invalid {skippedCount === 1 ? "line" : "lines"}.
+          Ignoring {skippedCount} invalid{' '}
+          {skippedCount === 1 ? 'line' : 'lines'}.
         </p>
       ) : null}
     </div>

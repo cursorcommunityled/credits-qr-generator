@@ -1,34 +1,37 @@
-"use client"
+'use client'
 
-import { useMemo, useRef, useState } from "react"
-import { QrCode as QrCodeIcon, Sparkles } from "lucide-react"
-import { CardCustomizer } from "./card-customizer"
-import { CardPreview, type CardFace } from "./card-preview"
-import { CsvUploader } from "./csv-uploader"
-import { DownloadActions } from "./download-actions"
-import { ExportStage, type ExportStageHandle } from "./export-stage"
-import { CodesList } from "./codes-list"
-import { CursorLogo } from "./cursor-logo"
-import { ManualLinksInput } from "./manual-links-input"
-import { parseManualRedeemLinks } from "@/lib/bulk-qr/csv-parser"
-import type { CardConfig, RedeemCode } from "@/lib/bulk-qr/types"
+import { useMemo, useRef, useState } from 'react'
+import { QrCode as QrCodeIcon, Sparkles } from 'lucide-react'
+import { CardCustomizer } from './card-customizer'
+import { CardPreview, type CardFace } from './card-preview'
+import { CsvUploader } from './csv-uploader'
+import { DownloadActions } from './download-actions'
+import { ExportStage, type ExportStageHandle } from './export-stage'
+import { CodesList } from './codes-list'
+import { CursorLogo } from './cursor-logo'
+import { ManualLinksInput } from './manual-links-input'
+import { parseManualRedeemLinks } from '@/lib/bulk-qr/csv-parser'
+import type { CardConfig, RedeemCode } from '@/lib/bulk-qr/types'
 
 const DEFAULT_CONFIG: CardConfig = {
-  theme: "dark",
-  qrStyle: "dots",
-  eventName: "",
-  locale: "en",
+  theme: 'dark',
+  qrStyle: 'dots',
+  eventName: '',
+  locale: 'en',
 }
 
 export function BulkQrGenerator() {
   const [csvCodes, setCsvCodes] = useState<RedeemCode[]>([])
   const [fileName, setFileName] = useState<string | null>(null)
-  const [manualLinks, setManualLinks] = useState("")
+  const [manualLinks, setManualLinks] = useState('')
   const [config, setConfig] = useState<CardConfig>(DEFAULT_CONFIG)
-  const [previewFace, setPreviewFace] = useState<CardFace>("front")
+  const [previewFace, setPreviewFace] = useState<CardFace>('front')
   const stageRef = useRef<ExportStageHandle | null>(null)
 
-  const manualInput = useMemo(() => parseManualRedeemLinks(manualLinks), [manualLinks])
+  const manualInput = useMemo(
+    () => parseManualRedeemLinks(manualLinks),
+    [manualLinks],
+  )
   const codes = useMemo(
     () => [...csvCodes, ...manualInput.codes],
     [csvCodes, manualInput.codes],
@@ -70,8 +73,9 @@ export function BulkQrGenerator() {
             Bulk QR generator
           </h1>
           <p className="max-w-xl text-pretty text-sm text-muted-foreground">
-            Upload a CSV and/or add redeem links manually, tune the card styling,
-            and export print-ready QR cards for your next Cursor meetup.
+            Upload a CSV and/or add redeem links manually, tune the card
+            styling, and export print-ready QR cards for your next Cursor
+            meetup.
           </p>
         </div>
       </header>
@@ -107,8 +111,8 @@ export function BulkQrGenerator() {
             />
             <p className="text-[11px] text-muted-foreground">
               {stats.ready
-                ? `Using ${stats.count} total ${stats.count === 1 ? "link" : "links"} (${describeCodeSources(stats.csvCount, stats.manualCount)}).`
-                : "Upload a CSV, paste links, or combine both before exporting."}
+                ? `Using ${stats.count} total ${stats.count === 1 ? 'link' : 'links'} (${describeCodeSources(stats.csvCount, stats.manualCount)}).`
+                : 'Upload a CSV, paste links, or combine both before exporting.'}
             </p>
           </section>
 
@@ -120,7 +124,7 @@ export function BulkQrGenerator() {
             <CardCustomizer
               config={config}
               onChange={setConfig}
-              onEventNameFocus={() => setPreviewFace("back")}
+              onEventNameFocus={() => setPreviewFace('back')}
             />
           </section>
 
@@ -134,8 +138,8 @@ export function BulkQrGenerator() {
             />
             {stats.ready ? (
               <p className="text-[11px] text-muted-foreground">
-                ZIP contains a <span className="font-mono">fronts/</span> folder with
-                one PNG per code, plus a single{" "}
+                ZIP contains a <span className="font-mono">fronts/</span> folder
+                with one PNG per code, plus a single{' '}
                 <span className="font-mono">back.png</span>.
               </p>
             ) : null}
@@ -160,7 +164,13 @@ export function BulkQrGenerator() {
   )
 }
 
-function SectionHeading({ icon, label }: { icon?: React.ReactNode; label: string }) {
+function SectionHeading({
+  icon,
+  label,
+}: {
+  icon?: React.ReactNode
+  label: string
+}) {
   return (
     <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
       {icon ? (
@@ -186,5 +196,5 @@ function describeCodeSources(csvCount: number, manualCount: number) {
     return `${manualCount} manual`
   }
 
-  return "0"
+  return '0'
 }
