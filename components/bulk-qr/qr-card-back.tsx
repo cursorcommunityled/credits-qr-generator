@@ -56,15 +56,6 @@ export const QrCardBack = forwardRef<HTMLDivElement, QrCardBackProps>(function Q
           </div>
         ) : null}
       </div>
-
-      <span
-        className={cn(
-          "absolute bottom-2 text-[8px] font-medium uppercase tracking-[0.18em]",
-          isDark ? "text-neutral-600" : "text-neutral-400",
-        )}
-      >
-        Ambassador Program
-      </span>
     </div>
   )
 })
