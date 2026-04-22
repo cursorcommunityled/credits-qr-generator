@@ -59,8 +59,11 @@ export function getCardTokens(theme: CardTheme): CardColorTokens {
 export const CARD_WIDTH = 249
 export const CARD_HEIGHT = 165
 
-/** Size of the QR code rendered on the front of the card. */
-export const QR_SIZE = 104
+/**
+ * Size of the QR code rendered on the front of the card.
+ * Must fit inside the QR column (30% of ~231px inner width ≈ 69px).
+ */
+export const QR_SIZE = 64
 
 /**
  * Scale factor used for on-screen preview. The card still renders at its real

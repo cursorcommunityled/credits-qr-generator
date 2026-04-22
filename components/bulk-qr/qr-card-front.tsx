@@ -43,7 +43,9 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
       <div
         className="grid h-full w-full border"
         style={{
-          gridTemplateColumns: "7fr 3fr",
+          // minmax(0, Xfr) prevents intrinsic content width (the QR) from
+          // overriding the 70/30 ratio and forcing its column to expand.
+          gridTemplateColumns: "minmax(0, 7fr) minmax(0, 3fr)",
           background: tokens.container,
           borderColor: tokens.border,
         }}
@@ -85,7 +87,7 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
         </div>
 
         {/* Right: QR + fallback URL */}
-        <div className="flex flex-col items-center justify-center gap-1.5 px-2 py-3">
+        <div className="flex min-w-0 flex-col items-center justify-center gap-1.5 px-1 py-3">
           <QrCode
             value={code.url}
             size={QR_SIZE}
