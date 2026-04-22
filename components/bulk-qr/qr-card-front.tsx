@@ -104,10 +104,7 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
         </div>
 
         {/* Bottom row: raw link spans full card width */}
-        <div
-          className="flex items-center justify-center border-t px-2 py-1.5"
-          style={{ borderColor: tokens.border }}
-        >
+        <div className="flex items-center justify-center px-2 pb-2">
           <span
             className="max-w-full truncate text-center font-mono text-[7px] leading-tight"
             style={{ color: tokens.accent }}
