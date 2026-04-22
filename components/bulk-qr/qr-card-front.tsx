@@ -9,6 +9,7 @@ import {
   type CardConfig,
   type RedeemCode,
 } from "@/lib/bulk-qr/types"
+import { getCardCopy } from "@/lib/bulk-qr/i18n"
 import { cn } from "@/lib/utils"
 
 interface QrCardFrontProps {
@@ -27,6 +28,7 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
   ref,
 ) {
   const tokens = getCardTokens(config.theme)
+  const copy = getCardCopy(config.locale)
 
   return (
     <div
@@ -63,13 +65,13 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
                 className="text-[7px] font-medium"
                 style={{ color: tokens.mutedForeground }}
               >
-                Cursor credits
+                {copy.eyebrow}
               </span>
               <h2
                 className="text-balance text-[10px] font-semibold leading-tight"
                 style={{ color: tokens.accent }}
               >
-                Scan to redeem
+                {copy.headline}
               </h2>
             </div>
 
@@ -77,17 +79,9 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
               className="flex flex-col gap-1 text-[7px] leading-snug"
               style={{ color: tokens.foreground }}
             >
-              <StepItem n={1} label="Scan the QR." tokens={tokens} />
-              <StepItem
-                n={2}
-                label="Sign in (personal account, not Team)."
-                tokens={tokens}
-              />
-              <StepItem
-                n={3}
-                label="Redeem — applies to your next invoice."
-                tokens={tokens}
-              />
+              <StepItem n={1} label={copy.steps.scan} tokens={tokens} />
+              <StepItem n={2} label={copy.steps.signIn} tokens={tokens} />
+              <StepItem n={3} label={copy.steps.redeem} tokens={tokens} />
             </ol>
           </div>
 

@@ -1,3 +1,5 @@
+import type { CardLocale } from "./i18n"
+
 export type CardTheme = "light" | "dark"
 export type QrStyle = "square" | "dots"
 
@@ -12,6 +14,7 @@ export interface CardConfig {
   theme: CardTheme
   qrStyle: QrStyle
   eventName: string
+  locale: CardLocale
 }
 
 /**
