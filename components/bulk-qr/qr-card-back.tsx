@@ -33,11 +33,11 @@ export const QrCardBack = forwardRef<HTMLDivElement, QrCardBackProps>(function Q
       }}
       data-card-face="back"
     >
-      <div className="flex flex-col items-center gap-4">
-        <CursorLogo className="h-16 w-auto" />
-        <CursorWordmark className="h-7 w-auto" />
+      <div className="flex flex-col items-center gap-2.5">
+        <CursorLogo className="h-10 w-auto" />
+        <CursorWordmark className="h-[18px] w-auto" />
         {eventName ? (
-          <div className="flex flex-col items-center gap-1.5 pt-1">
+          <div className="flex flex-col items-center gap-1 pt-0.5">
             <span
               className={cn(
                 "h-px w-8",
@@ -47,7 +47,7 @@ export const QrCardBack = forwardRef<HTMLDivElement, QrCardBackProps>(function Q
             />
             <span
               className={cn(
-                "text-[11px] font-medium uppercase tracking-[0.22em]",
+                "text-[10px] font-medium uppercase tracking-[0.22em]",
                 isDark ? "text-neutral-300" : "text-neutral-600",
               )}
             >
@@ -59,7 +59,7 @@ export const QrCardBack = forwardRef<HTMLDivElement, QrCardBackProps>(function Q
 
       <span
         className={cn(
-          "absolute bottom-3 text-[9px] font-medium uppercase tracking-[0.18em]",
+          "absolute bottom-2 text-[8px] font-medium uppercase tracking-[0.18em]",
           isDark ? "text-neutral-600" : "text-neutral-400",
         )}
       >

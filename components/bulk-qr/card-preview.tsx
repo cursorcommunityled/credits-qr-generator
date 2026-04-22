@@ -7,7 +7,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty"
 import { QrCardFront } from "./qr-card-front"
 import { QrCardBack } from "./qr-card-back"
-import type { CardConfig, RedeemCode } from "@/lib/bulk-qr/types"
+import { CARD_HEIGHT, CARD_WIDTH, PREVIEW_SCALE, type CardConfig, type RedeemCode } from "@/lib/bulk-qr/types"
 
 interface CardPreviewProps {
   codes: RedeemCode[]
@@ -72,11 +72,28 @@ export function CardPreview({ codes, config }: CardPreviewProps) {
         className="flex items-center justify-center rounded-2xl border border-border bg-secondary/40 p-8"
         data-theme-preview={config.theme}
       >
-        {face === "front" && currentCode ? (
-          <QrCardFront code={currentCode} config={config} />
-        ) : (
-          <QrCardBack config={config} />
-        )}
+        <div
+          style={{
+            width: CARD_WIDTH * PREVIEW_SCALE,
+            height: CARD_HEIGHT * PREVIEW_SCALE,
+          }}
+          aria-label={`Card preview at ${PREVIEW_SCALE}x scale`}
+        >
+          <div
+            style={{
+              transform: `scale(${PREVIEW_SCALE})`,
+              transformOrigin: "top left",
+              width: CARD_WIDTH,
+              height: CARD_HEIGHT,
+            }}
+          >
+            {face === "front" && currentCode ? (
+              <QrCardFront code={currentCode} config={config} />
+            ) : (
+              <QrCardBack config={config} />
+            )}
+          </div>
+        </div>
       </div>
 
       {face === "front" && currentCode ? (

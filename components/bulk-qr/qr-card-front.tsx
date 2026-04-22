@@ -42,7 +42,7 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
       <div className="flex items-center justify-center">
         <div
           className={cn(
-            "flex items-center justify-center rounded-xl p-2.5",
+            "flex items-center justify-center rounded-lg p-1.5",
             isDark ? "bg-neutral-900/60" : "bg-neutral-100/60",
           )}
         >
@@ -56,36 +56,36 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
       </div>
 
       {/* Right: Instructions */}
-      <div className="flex h-full flex-col justify-between py-5 pr-5">
-        <div className="flex flex-col gap-1">
+      <div className="flex h-full flex-col justify-between py-3.5 pr-3.5">
+        <div className="flex flex-col gap-0.5">
           <span
             className={cn(
-              "text-[10px] font-medium uppercase tracking-[0.14em]",
+              "text-[8px] font-medium uppercase tracking-[0.14em]",
               isDark ? "text-neutral-400" : "text-neutral-500",
             )}
           >
             Cursor credits
           </span>
-          <h2 className="text-balance text-[18px] font-semibold leading-tight">
+          <h2 className="text-balance text-[13px] font-semibold leading-tight">
             Scan to redeem
           </h2>
         </div>
 
         <ol
           className={cn(
-            "flex flex-col gap-1.5 text-[11px] leading-relaxed",
+            "flex flex-col gap-1 text-[9px] leading-snug",
             isDark ? "text-neutral-300" : "text-neutral-600",
           )}
         >
-          <li className="flex gap-1.5">
+          <li className="flex gap-1">
             <Step n={1} dark={isDark} />
             <span>Open the camera and scan the QR.</span>
           </li>
-          <li className="flex gap-1.5">
+          <li className="flex gap-1">
             <Step n={2} dark={isDark} />
             <span>Sign in to your Cursor account.</span>
           </li>
-          <li className="flex gap-1.5">
+          <li className="flex gap-1">
             <Step n={3} dark={isDark} />
             <span>Credits are added automatically.</span>
           </li>
@@ -93,7 +93,7 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
 
         <div
           className={cn(
-            "flex items-center justify-between text-[9px] font-medium uppercase tracking-[0.18em]",
+            "flex items-center justify-between text-[7px] font-medium uppercase tracking-[0.18em]",
             isDark ? "text-neutral-500" : "text-neutral-400",
           )}
         >
@@ -111,7 +111,7 @@ function Step({ n, dark }: { n: number; dark: boolean }) {
   return (
     <span
       className={cn(
-        "mt-[1px] flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full text-[9px] font-semibold",
+        "mt-[1px] flex h-3 w-3 shrink-0 items-center justify-center rounded-full text-[7px] font-semibold",
         dark
           ? "bg-neutral-50 text-neutral-950"
           : "bg-neutral-950 text-neutral-50",
