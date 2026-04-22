@@ -140,6 +140,7 @@ export function DownloadActions({
           codes={codes}
           config={config}
           getFrontNode={getFrontNode}
+          getBackNode={getBackNode}
           externallyDisabled={isWorking}
         />
       </div>
