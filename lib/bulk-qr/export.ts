@@ -4,10 +4,14 @@ import JSZip from "jszip"
 const EXPORT_SCALE = 3
 
 export async function nodeToPngBlob(node: HTMLElement): Promise<Blob> {
+  // NOTE: do not pass `backgroundColor` here. html-to-image applies that option
+  // as an inline style on the cloned root AFTER copying computed styles, which
+  // would overwrite the card's own outer frame color (tokens.background) and
+  // cause the export to drop the darker outer frame, leaving only the inner
+  // container. The card root already paints its own full-bleed background.
   const dataUrl = await toPng(node, {
     pixelRatio: EXPORT_SCALE,
     cacheBust: true,
-    backgroundColor: "transparent",
   })
   const res = await fetch(dataUrl)
   return res.blob()
