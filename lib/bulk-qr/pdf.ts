@@ -168,6 +168,13 @@ export function countPdfPages(totalCards: number, layout: PdfLayout): number {
 export interface GeneratePdfInput {
   /** One PNG blob per card front, in the order they should appear. */
   fronts: Blob[]
+  /**
+   * Optional single back-card PNG. When provided, one extra page is appended
+   * at the end with the back tiled across every grid slot — enough copies to
+   * cut and pair with the fronts. All backs are identical so we only need a
+   * single PNG and a single page, regardless of how many fronts were printed.
+   */
+  back?: Blob
   layout: PdfLayout
   /** Optional title written to the PDF's metadata. */
   documentTitle?: string
@@ -181,6 +188,7 @@ export interface GeneratePdfInput {
  */
 export async function generateCardsPdf({
   fronts,
+  back,
   layout,
   documentTitle,
   onProgress,
@@ -219,8 +227,14 @@ export async function generateCardsPdf({
 
   // jsPDF wants data URLs for addImage. Convert blobs up front in parallel so
   // the hot loop below only does synchronous drawing work.
-  const dataUrls = await Promise.all(fronts.map(blobToDataUrl))
+  const [dataUrls, backDataUrl] = await Promise.all([
+    Promise.all(fronts.map(blobToDataUrl)),
+    back ? blobToDataUrl(back) : Promise.resolve<string | null>(null),
+  ])
 
+  // Total work units for progress reporting: every front + every back slot
+  // drawn on the final page (if a back is supplied).
+  const totalWork = dataUrls.length + (backDataUrl ? layout.perPage : 0)
   let drawn = 0
   let pageIndex = 0
 
@@ -247,7 +261,30 @@ export async function generateCardsPdf({
         "FAST",
       )
       drawn += 1
-      onProgress?.(drawn, dataUrls.length)
+      onProgress?.(drawn, totalWork)
+    }
+  }
+
+  // Single extra page with the shared back card tiled across every grid slot.
+  if (backDataUrl && layout.perPage > 0) {
+    doc.addPage([layout.pageWidthMm, layout.pageHeightMm], orientation)
+    for (let idx = 0; idx < layout.perPage; idx += 1) {
+      const col = idx % layout.cols
+      const row = Math.floor(idx / layout.cols)
+      const x = layout.offsetXMm + col * (layout.cardWidthMm + layout.gapMm)
+      const y = layout.offsetYMm + row * (layout.cardHeightMm + layout.gapMm)
+      doc.addImage(
+        backDataUrl,
+        "PNG",
+        x,
+        y,
+        layout.cardWidthMm,
+        layout.cardHeightMm,
+        undefined,
+        "FAST",
+      )
+      drawn += 1
+      onProgress?.(drawn, totalWork)
     }
   }
 

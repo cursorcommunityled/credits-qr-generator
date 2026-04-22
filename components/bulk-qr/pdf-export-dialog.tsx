@@ -38,6 +38,11 @@ interface PdfExportDialogProps {
   codes: RedeemCode[]
   config: CardConfig
   getFrontNode: (codeId: string) => HTMLElement | null
+  /**
+   * Returns the shared card-back element. All backs are identical, so we
+   * only render it once and tile it on a single final page in the PDF.
+   */
+  getBackNode: () => HTMLElement | null
   /** Disables the trigger while other exports are in-flight. */
   externallyDisabled?: boolean
 }
@@ -59,6 +64,7 @@ export function PdfExportDialog({
   codes,
   config,
   getFrontNode,
+  getBackNode,
   externallyDisabled,
 }: PdfExportDialogProps) {
   const [open, setOpen] = useState(false)
@@ -89,9 +95,19 @@ export function PdfExportDialog({
       }
 
       setStatus({ kind: "packaging" })
+
+      // Render the shared back exactly once — it's identical for every code,
+      // so a single tiled page is appended to the PDF.
+      const backNode = getBackNode()
+      if (!backNode) {
+        throw new Error("The card back is not available.")
+      }
+      const backBlob = await nodeToPngBlob(backNode, { pixelRatio: PRINT_SCALE })
+
       const slug = sanitizeFileSegment(config.eventName) || "cursor"
       const pdfBlob = await generateCardsPdf({
         fronts,
+        back: backBlob,
         layout,
         documentTitle: `${slug}-cards`,
       })
@@ -132,7 +148,8 @@ export function PdfExportDialog({
           <DialogDescription>
             Pick a paper size and layout. We&apos;ll generate a print-ready PDF
             using real-world millimeter sizing, with gaps between cards so you
-            can trim cleanly.
+            can trim cleanly. One extra page of tiled card backs is appended at
+            the end.
           </DialogDescription>
         </DialogHeader>
 
@@ -150,7 +167,7 @@ export function PdfExportDialog({
               rows={layout.rows}
               perPage={layout.perPage}
               totalCards={codes.length}
-              totalPages={totalPages}
+              totalFrontPages={totalPages}
             />
           </div>
         </div>
@@ -214,7 +231,8 @@ interface LayoutStatsProps {
   rows: number
   perPage: number
   totalCards: number
-  totalPages: number
+  /** Number of front pages, not counting the single appended back page. */
+  totalFrontPages: number
 }
 
 function LayoutStats({
@@ -222,22 +240,29 @@ function LayoutStats({
   rows,
   perPage,
   totalCards,
-  totalPages,
+  totalFrontPages,
 }: LayoutStatsProps) {
+  const hasFronts = totalFrontPages > 0
+  // One tiled back page is always appended when there are any cards.
+  const totalPages = hasFronts ? totalFrontPages + 1 : 0
   return (
     <dl className="grid grid-cols-2 gap-3 rounded-lg border border-border bg-card p-3 text-sm">
       <StatRow label="Cards per page" value={perPage > 0 ? `${cols} × ${rows} = ${perPage}` : "0"} />
       <StatRow label="Total codes" value={`${totalCards}`} />
       <StatRow
         label="Pages"
-        value={`${totalPages}`}
+        value={
+          hasFronts
+            ? `${totalPages} (${totalFrontPages} front + 1 back)`
+            : "0"
+        }
         tone={totalPages === 0 ? "warn" : "default"}
       />
       <StatRow
-        label="Last page fill"
+        label="Last front page fill"
         value={
           perPage > 0 && totalCards > 0
-            ? `${totalCards - (totalPages - 1) * perPage} / ${perPage}`
+            ? `${totalCards - (totalFrontPages - 1) * perPage} / ${perPage}`
             : "—"
         }
       />
