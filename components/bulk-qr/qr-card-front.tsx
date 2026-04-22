@@ -129,9 +129,11 @@ function StepItem({
   tokens: CardColorTokens
 }) {
   return (
-    <li>
-      <span style={{ color: tokens.mutedForeground }}>{n}.</span>{" "}
-      <span>{label}</span>
+    <li className="grid grid-cols-[2ch_minmax(0,1fr)] items-start gap-x-1">
+      <span className="tabular-nums text-right" style={{ color: tokens.mutedForeground }}>
+        {n}.
+      </span>
+      <span className="min-w-0">{label}</span>
     </li>
   )
 }
