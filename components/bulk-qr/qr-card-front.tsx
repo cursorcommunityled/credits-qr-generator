@@ -43,30 +43,13 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
       <div
         className="grid h-full w-full border"
         style={{
-          gridTemplateColumns: "1fr 1fr",
+          gridTemplateColumns: "3fr 2fr",
           background: tokens.container,
           borderColor: tokens.border,
         }}
       >
-        {/* Left: QR + fallback URL */}
-        <div className="flex flex-col items-center justify-center gap-1.5 px-2 py-3">
-          <QrCode
-            value={code.url}
-            size={QR_SIZE}
-            style={config.qrStyle}
-            theme={config.theme}
-          />
-          <span
-            className="max-w-full break-all text-center font-mono text-[6px] leading-tight"
-            style={{ color: tokens.accent }}
-            title={code.url}
-          >
-            {stripProtocol(code.url)}
-          </span>
-        </div>
-
-        {/* Right: Instructions */}
-        <div className="flex h-full flex-col justify-center gap-3 py-3.5 pr-3.5">
+        {/* Left: Instructions */}
+        <div className="flex h-full flex-col justify-center gap-3 py-3.5 pl-3.5">
           <div className="flex flex-col gap-0.5">
             <span
               className="text-[8px] font-medium uppercase tracking-[0.14em]"
@@ -99,6 +82,23 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
               <span>Redeem.</span>
             </li>
           </ol>
+        </div>
+
+        {/* Right: QR + fallback URL */}
+        <div className="flex flex-col items-center justify-center gap-1.5 px-2 py-3">
+          <QrCode
+            value={code.url}
+            size={QR_SIZE}
+            style={config.qrStyle}
+            theme={config.theme}
+          />
+          <span
+            className="max-w-full break-all text-center font-mono text-[6px] leading-tight"
+            style={{ color: tokens.accent }}
+            title={code.url}
+          >
+            {stripProtocol(code.url)}
+          </span>
         </div>
       </div>
     </div>
