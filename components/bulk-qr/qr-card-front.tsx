@@ -43,7 +43,7 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
       <div
         className="grid h-full w-full border"
         style={{
-          gridTemplateColumns: "3fr 2fr",
+          gridTemplateColumns: "7fr 3fr",
           background: tokens.container,
           borderColor: tokens.border,
         }}
