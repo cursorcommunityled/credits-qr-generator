@@ -60,7 +60,7 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
           <div className="flex h-full flex-col justify-center gap-3 py-3.5 pl-3.5">
             <div className="flex flex-col gap-0.5">
               <span
-                className="text-[8px] font-medium uppercase"
+                className="text-[8px] font-medium"
                 style={{ color: tokens.mutedForeground }}
               >
                 Cursor credits
@@ -106,7 +106,7 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
         {/* Bottom row: raw link spans full card width */}
         <div className="flex items-center justify-center px-2 pb-2">
           <span
-            className="max-w-full truncate text-center font-mono text-[7px] leading-tight"
+            className="max-w-full truncate text-center font-mono text-[7px] leading-tight tracking-normal"
             style={{ color: tokens.accent }}
             title={code.url}
           >
