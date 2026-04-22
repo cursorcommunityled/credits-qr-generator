@@ -64,7 +64,7 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
       </div>
 
       {/* Right: Instructions */}
-      <div className="flex h-full flex-col justify-between py-3.5 pr-3.5">
+      <div className="flex h-full flex-col justify-center gap-3 py-3.5 pr-3.5">
         <div className="flex flex-col gap-0.5">
           <span
             className={cn(
@@ -98,18 +98,6 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
             <span>Credits are added automatically.</span>
           </li>
         </ol>
-
-        <div
-          className={cn(
-            "flex items-center justify-between text-[7px] font-medium uppercase tracking-[0.18em]",
-            isDark ? "text-neutral-500" : "text-neutral-400",
-          )}
-        >
-          <span>One-time use</span>
-          <span className="font-mono normal-case tracking-normal">
-            {code.code.slice(0, 10)}
-          </span>
-        </div>
       </div>
     </div>
   )
