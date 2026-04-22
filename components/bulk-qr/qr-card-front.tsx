@@ -38,8 +38,8 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
       }}
       data-card-face="front"
     >
-      {/* Left: QR */}
-      <div className="flex items-center justify-center">
+      {/* Left: QR + fallback URL */}
+      <div className="flex flex-col items-center justify-center gap-1 px-2 py-3">
         <div
           className={cn(
             "flex items-center justify-center rounded-lg p-1.5",
@@ -53,6 +53,15 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
             theme={config.theme}
           />
         </div>
+        <span
+          className={cn(
+            "max-w-full break-all text-center font-mono text-[6px] leading-tight",
+            isDark ? "text-neutral-400" : "text-neutral-500",
+          )}
+          title={code.url}
+        >
+          {stripProtocol(code.url)}
+        </span>
       </div>
 
       {/* Right: Instructions */}
@@ -106,6 +115,14 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
     </div>
   )
 })
+
+/**
+ * Strips `http(s)://` from a URL so the fallback label is shorter and easier
+ * to read. Also drops a trailing slash. Used purely for display.
+ */
+function stripProtocol(url: string): string {
+  return url.replace(/^https?:\/\//i, "").replace(/\/$/, "")
+}
 
 function Step({ n, dark }: { n: number; dark: boolean }) {
   return (
