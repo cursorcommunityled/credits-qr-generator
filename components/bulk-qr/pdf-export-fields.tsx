@@ -1,23 +1,23 @@
-"use client"
+'use client'
 
-import { useId } from "react"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { useId } from 'react'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+} from '@/components/ui/select'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import {
   CUSTOM_PAPER_ID,
   PAPER_SIZES,
   PDF_FIELD_LIMITS,
   type PaperOrientation,
   type PdfExportSettings,
-} from "@/lib/bulk-qr/pdf"
+} from '@/lib/bulk-qr/pdf'
 
 interface PdfExportFieldsProps {
   settings: PdfExportSettings
@@ -189,11 +189,11 @@ function NumericField({
         min={min}
         max={max}
         step={step}
-        value={Number.isFinite(value) ? value : ""}
+        value={Number.isFinite(value) ? value : ''}
         disabled={disabled}
         onChange={(event) => {
           const raw = event.target.value
-          if (raw === "") {
+          if (raw === '') {
             onChange(0)
             return
           }

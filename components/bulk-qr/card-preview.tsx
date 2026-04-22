@@ -1,15 +1,27 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty"
-import { QrCardFront } from "./qr-card-front"
-import { QrCardBack } from "./qr-card-back"
-import { CARD_HEIGHT, CARD_WIDTH, PREVIEW_SCALE, type CardConfig, type RedeemCode } from "@/lib/bulk-qr/types"
+import { useState } from 'react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from '@/components/ui/empty'
+import { QrCardFront } from './qr-card-front'
+import { QrCardBack } from './qr-card-back'
+import {
+  CARD_HEIGHT,
+  CARD_WIDTH,
+  PREVIEW_SCALE,
+  type CardConfig,
+  type RedeemCode,
+} from '@/lib/bulk-qr/types'
 
-export type CardFace = "front" | "back"
+export type CardFace = 'front' | 'back'
 
 interface CardPreviewProps {
   codes: RedeemCode[]
@@ -29,7 +41,7 @@ export function CardPreview({
   onFaceChange,
 }: CardPreviewProps) {
   const [index, setIndex] = useState(0)
-  const [internalFace, setInternalFace] = useState<CardFace>("front")
+  const [internalFace, setInternalFace] = useState<CardFace>('front')
   const face = faceProp ?? internalFace
   const setFace = (next: CardFace) => {
     if (faceProp === undefined) setInternalFace(next)
@@ -43,9 +55,10 @@ export function CardPreview({
     return (
       <Empty className="h-full min-h-[360px] border border-dashed">
         <EmptyHeader>
-          <EmptyTitle>Upload a CSV to preview</EmptyTitle>
+          <EmptyTitle>Add codes to preview</EmptyTitle>
           <EmptyDescription>
-            Once you upload a file, you&apos;ll see each card render here with your styling applied.
+            Upload a CSV or paste links manually to see each card render here
+            with your styling applied.
           </EmptyDescription>
         </EmptyHeader>
       </Empty>
@@ -55,18 +68,23 @@ export function CardPreview({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <Tabs value={face} onValueChange={(value) => setFace(value as CardFace)}>
+        <Tabs
+          value={face}
+          onValueChange={(value) => setFace(value as CardFace)}
+        >
           <TabsList>
             <TabsTrigger value="front">Front</TabsTrigger>
             <TabsTrigger value="back">Back</TabsTrigger>
           </TabsList>
         </Tabs>
-        {face === "front" && codes.length > 1 ? (
+        {face === 'front' && codes.length > 1 ? (
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
               size="icon"
-              onClick={() => setIndex((i) => (i - 1 + codes.length) % codes.length)}
+              onClick={() =>
+                setIndex((i) => (i - 1 + codes.length) % codes.length)
+              }
               aria-label="Previous card"
             >
               <ChevronLeft className="h-4 w-4" aria-hidden="true" />
@@ -100,12 +118,12 @@ export function CardPreview({
           <div
             style={{
               transform: `scale(${PREVIEW_SCALE})`,
-              transformOrigin: "top left",
+              transformOrigin: 'top left',
               width: CARD_WIDTH,
               height: CARD_HEIGHT,
             }}
           >
-            {face === "front" && currentCode ? (
+            {face === 'front' && currentCode ? (
               <QrCardFront code={currentCode} config={config} />
             ) : (
               <QrCardBack config={config} />
@@ -114,7 +132,7 @@ export function CardPreview({
         </div>
       </div>
 
-      {face === "front" && currentCode ? (
+      {face === 'front' && currentCode ? (
         <EmptyContent className="flex flex-col items-center gap-1 text-center">
           <span className="font-mono text-[11px] text-muted-foreground break-all">
             {currentCode.url}
