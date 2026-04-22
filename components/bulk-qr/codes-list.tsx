@@ -10,7 +10,7 @@ export function CodesList({ codes }: CodesListProps) {
   return (
     <section className="rounded-2xl border border-border bg-card">
       <header className="flex items-center justify-between border-b border-border px-4 py-3">
-        <h2 className="text-sm font-semibold">Detected codes</h2>
+        <h2 className="text-sm font-semibold">Loaded codes</h2>
         <Badge variant="secondary" className="font-mono tabular-nums">
           {codes.length}
         </Badge>

@@ -22,16 +22,7 @@ export function parseRedeemCsv(file: File): Promise<ParseResult> {
 
           // Drop header row if first cell doesn't look like a URL.
           const startIndex = isLikelyUrl(raw[0] ?? "") ? 0 : 1
-          const urls = raw.slice(startIndex).filter(isLikelyUrl)
-          const skipped = raw.length - startIndex - urls.length
-
-          const codes: RedeemCode[] = urls.map((url, index) => ({
-            id: `code-${index}`,
-            url,
-            code: extractCode(url),
-          }))
-
-          resolve({ codes, skipped })
+          resolve(parseRedeemUrls(raw.slice(startIndex), "csv"))
         } catch (error) {
           reject(error)
         }
@@ -39,6 +30,32 @@ export function parseRedeemCsv(file: File): Promise<ParseResult> {
       error: reject,
     })
   })
+}
+
+/**
+ * Parses newline-separated redeem URLs pasted into the manual input field.
+ * Empty lines are ignored so users can space entries out.
+ */
+export function parseManualRedeemLinks(input: string): ParseResult {
+  const raw = input
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+
+  return parseRedeemUrls(raw, "manual")
+}
+
+function parseRedeemUrls(values: string[], source: "csv" | "manual"): ParseResult {
+  const urls = values.filter(isLikelyUrl)
+  const skipped = values.length - urls.length
+
+  const codes: RedeemCode[] = urls.map((url, index) => ({
+    id: `${source}-${index}`,
+    url,
+    code: extractCode(url),
+  }))
+
+  return { codes, skipped }
 }
 
 function isLikelyUrl(value: string): boolean {

@@ -2,13 +2,14 @@
 
 This project helps Cursor Ambassadors and event hosts turn the redeem-link CSV shared by the Cursor team into branded, printable QR cards for in-person distribution.
 
-If you want to hand out physical Cursor credit cards at a meetup, workshop, or community event, upload the CSV file, generate one card per link, customize the look and copy, and export everything as either individual images or a print-ready PDF.
+If you want to hand out physical Cursor credit cards at a meetup, workshop, or community event, upload the CSV file and/or paste extra redeem links manually, generate one card per link, customize the look and copy, and export everything as either individual images or a print-ready PDF.
 
 This is a collaborative repo for the Ambassador and events community. Feedback, improvements, and contributions are open and very welcome.
 
 ## What The App Does
 
 - Upload a CSV file of redeem links provided by the Cursor team
+- Paste extra redeem links manually in the app when you only need a few or want to supplement a CSV
 - Read the links from the first column and generate one QR card per link
 - Apply Cursor branding to a front and back card design
 - Customize the card theme with light or dark variants
@@ -21,7 +22,7 @@ This is a collaborative repo for the Ambassador and events community. Feedback, 
 ## Typical Workflow
 
 1. Get the CSV file with redeem links from the Cursor team.
-2. Upload it into the app.
+2. Upload it into the app and optionally paste any additional redeem links manually.
 3. Review the generated cards and customize the theme, language, QR style, and event or city name.
 4. Export either:
    - a ZIP with all card images, or
@@ -43,6 +44,14 @@ url
 https://cursor.com/redeem/abc123
 https://cursor.com/redeem/def456
 ```
+
+## Manual Links
+
+You can also paste redeem links directly into the app.
+
+- One full `http` or `https` redeem URL per line
+- Empty lines are ignored
+- Manual links are combined with any uploaded CSV links
 
 ## Export Options
 

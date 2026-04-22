@@ -43,9 +43,10 @@ export function CardPreview({
     return (
       <Empty className="h-full min-h-[360px] border border-dashed">
         <EmptyHeader>
-          <EmptyTitle>Upload a CSV to preview</EmptyTitle>
+          <EmptyTitle>Add codes to preview</EmptyTitle>
           <EmptyDescription>
-            Once you upload a file, you&apos;ll see each card render here with your styling applied.
+            Upload a CSV or paste links manually to see each card render here
+            with your styling applied.
           </EmptyDescription>
         </EmptyHeader>
       </Empty>
