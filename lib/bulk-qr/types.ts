@@ -14,12 +14,45 @@ export interface CardConfig {
   eventName: string
 }
 
-export interface ThemeTokens {
+/**
+ * All color roles used inside a printed card. Both sides and the embedded
+ * QR all derive their colors from here, so the theme is edited in one place.
+ */
+export interface CardColorTokens {
+  /** Card outer background (outside the inner container). */
   background: string
-  foreground: string
-  mutedForeground: string
+  /** Inner container fill — also used as the QR's effective background. */
+  container: string
+  /** Inner container hairline border. */
   border: string
+  /** Main text, Cursor logo/wordmark, and QR dots. */
+  foreground: string
+  /** Secondary labels, event/city name, divider caps. */
+  mutedForeground: string
+  /** Accent color for "Scan to redeem" and the raw redeem link. */
   accent: string
+}
+
+const DARK_CARD_TOKENS: CardColorTokens = {
+  background: "#15120B",
+  container: "#1C1B16",
+  border: "#33322D",
+  foreground: "#FDFDFB",
+  mutedForeground: "#969590",
+  accent: "#D95910",
+}
+
+const LIGHT_CARD_TOKENS: CardColorTokens = {
+  background: "#FAFAF9",
+  container: "#E7E5E4",
+  border: "#A6A09B",
+  foreground: "#0C0A09",
+  mutedForeground: "#57534D",
+  accent: "#CE530D",
+}
+
+export function getCardTokens(theme: CardTheme): CardColorTokens {
+  return theme === "dark" ? DARK_CARD_TOKENS : LIGHT_CARD_TOKENS
 }
 
 /** Physical card dimensions, in CSS pixels. This is the exact size used for export. */
