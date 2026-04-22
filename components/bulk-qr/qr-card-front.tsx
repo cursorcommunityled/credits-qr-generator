@@ -9,6 +9,7 @@ import {
   type CardConfig,
   type RedeemCode,
 } from "@/lib/bulk-qr/types"
+import { getCardCopy } from "@/lib/bulk-qr/i18n"
 import { cn } from "@/lib/utils"
 
 interface QrCardFrontProps {
@@ -27,11 +28,12 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
   ref,
 ) {
   const tokens = getCardTokens(config.theme)
+  const copy = getCardCopy(config.locale)
 
   return (
     <div
       ref={ref}
-      className={cn("relative overflow-hidden p-2", className)}
+      className={cn("relative overflow-hidden p-2 tracking-[-0.03em]", className)}
       style={{
         width: CARD_WIDTH,
         height: CARD_HEIGHT,
@@ -60,35 +62,26 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
           <div className="flex h-full flex-col justify-center gap-3 py-3.5 pl-3.5">
             <div className="flex flex-col gap-0.5">
               <span
-                className="text-[8px] font-medium uppercase tracking-[0.14em]"
+                className="text-[7px] font-medium"
                 style={{ color: tokens.mutedForeground }}
               >
-                Cursor credits
+                {copy.eyebrow}
               </span>
               <h2
-                className="text-balance text-[13px] font-semibold leading-tight"
+                className="text-balance text-[10px] font-semibold leading-tight"
                 style={{ color: tokens.accent }}
               >
-                Scan to redeem
+                {copy.headline}
               </h2>
             </div>
 
             <ol
-              className="flex flex-col gap-1 text-[9px] leading-snug"
+              className="flex flex-col gap-1 text-[7px] leading-snug"
               style={{ color: tokens.foreground }}
             >
-              <li className="flex gap-1">
-                <Step n={1} tokens={tokens} />
-                <span>Scan QR.</span>
-              </li>
-              <li className="flex gap-1">
-                <Step n={2} tokens={tokens} />
-                <span>Sign in.</span>
-              </li>
-              <li className="flex gap-1">
-                <Step n={3} tokens={tokens} />
-                <span>Redeem.</span>
-              </li>
+              <StepItem n={1} label={copy.steps.scan} tokens={tokens} />
+              <StepItem n={2} label={copy.steps.signIn} tokens={tokens} />
+              <StepItem n={3} label={copy.steps.redeem} tokens={tokens} />
             </ol>
           </div>
 
@@ -106,7 +99,7 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
         {/* Bottom row: raw link spans full card width */}
         <div className="flex items-center justify-center px-2 pb-2">
           <span
-            className="max-w-full truncate text-center font-mono text-[7px] leading-tight"
+            className="max-w-full truncate text-center font-mono text-[7px] leading-tight tracking-normal"
             style={{ color: tokens.accent }}
             title={code.url}
           >
@@ -126,14 +119,19 @@ function stripProtocol(url: string): string {
   return url.replace(/^https?:\/\//i, "").replace(/\/$/, "")
 }
 
-function Step({ n, tokens }: { n: number; tokens: CardColorTokens }) {
+function StepItem({
+  n,
+  label,
+  tokens,
+}: {
+  n: number
+  label: string
+  tokens: CardColorTokens
+}) {
   return (
-    <span
-      className="mt-[1px] flex h-3 w-3 shrink-0 items-center justify-center rounded-full text-[7px] font-semibold"
-      style={{ background: tokens.accent, color: tokens.container }}
-      aria-hidden="true"
-    >
-      {n}
-    </span>
+    <li>
+      <span style={{ color: tokens.mutedForeground }}>{n}.</span>{" "}
+      <span>{label}</span>
+    </li>
   )
 }

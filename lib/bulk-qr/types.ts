@@ -1,3 +1,5 @@
+import type { CardLocale } from "./i18n"
+
 export type CardTheme = "light" | "dark"
 export type QrStyle = "square" | "dots"
 
@@ -12,6 +14,7 @@ export interface CardConfig {
   theme: CardTheme
   qrStyle: QrStyle
   eventName: string
+  locale: CardLocale
 }
 
 /**
@@ -44,10 +47,10 @@ const DARK_CARD_TOKENS: CardColorTokens = {
 
 const LIGHT_CARD_TOKENS: CardColorTokens = {
   background: "#FAFAF9",
-  container: "#E7E5E4",
-  border: "#A6A09B",
+  container: "#F5F5F4",
+  border: "#D6D3D1",
   foreground: "#0C0A09",
-  mutedForeground: "#57534D",
+  mutedForeground: "#79716B",
   accent: "#CE530D",
 }
 

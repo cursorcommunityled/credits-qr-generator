@@ -1,7 +1,8 @@
 "use client"
 
-import { Moon, Sun, Grid3x3, Dot } from "lucide-react"
+import { Moon, Sun, Grid3x3, Dot, Languages } from "lucide-react"
 import type { CardConfig, CardTheme, QrStyle } from "@/lib/bulk-qr/types"
+import { CARD_LOCALE_OPTIONS, type CardLocale } from "@/lib/bulk-qr/i18n"
 import { Field, FieldGroup, FieldLabel, FieldDescription } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
@@ -60,6 +61,36 @@ export function CardCustomizer({ config, onChange }: CardCustomizerProps) {
             Dotted
           </ToggleGroupItem>
         </ToggleGroup>
+      </Field>
+
+      <Field>
+        <FieldLabel htmlFor="locale">Language</FieldLabel>
+        <ToggleGroup
+          id="locale"
+          type="single"
+          value={config.locale}
+          onValueChange={(value) => {
+            if (!value) return
+            onChange({ ...config, locale: value as CardLocale })
+          }}
+          variant="outline"
+          className="w-full"
+        >
+          {CARD_LOCALE_OPTIONS.map((option) => (
+            <ToggleGroupItem
+              key={option.value}
+              value={option.value}
+              aria-label={option.ariaLabel}
+              className="flex-1 gap-2"
+            >
+              <Languages className="h-4 w-4" aria-hidden="true" />
+              {option.label}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+        <FieldDescription>
+          Translates the redeem copy on the front of the card.
+        </FieldDescription>
       </Field>
 
       <Field>

@@ -113,11 +113,11 @@ export function DownloadActions({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex flex-col gap-2 sm:flex-row">
+      <div className="flex flex-col gap-2">
         <Button
           onClick={handleDownloadAll}
           disabled={isWorking || codes.length === 0}
-          className="flex-1"
+          className="w-full"
         >
           {isWorking ? (
             <Spinner className="h-4 w-4" />
@@ -130,7 +130,7 @@ export function DownloadActions({
           onClick={handleDownloadBack}
           disabled={isWorking}
           variant="outline"
-          className="flex-1"
+          className="w-full"
         >
           <Download className="h-4 w-4" aria-hidden="true" />
           Download back

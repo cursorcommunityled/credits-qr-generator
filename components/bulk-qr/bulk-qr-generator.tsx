@@ -15,6 +15,7 @@ const DEFAULT_CONFIG: CardConfig = {
   theme: "dark",
   qrStyle: "dots",
   eventName: "",
+  locale: "en",
 }
 
 export function BulkQrGenerator() {
