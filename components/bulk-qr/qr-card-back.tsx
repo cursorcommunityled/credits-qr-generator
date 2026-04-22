@@ -33,9 +33,9 @@ export const QrCardBack = forwardRef<HTMLDivElement, QrCardBackProps>(function Q
       }}
       data-card-face="back"
     >
-      <div className="flex flex-col items-center gap-3">
-        <CursorLogo className="h-14 w-14" />
-        <CursorWordmark className="text-[26px] leading-none" />
+      <div className="flex flex-col items-center gap-4">
+        <CursorLogo className="h-16 w-auto" />
+        <CursorWordmark className="h-7 w-auto" />
         {eventName ? (
           <div className="flex flex-col items-center gap-1.5 pt-1">
             <span

@@ -46,7 +46,7 @@ export function BulkQrGenerator() {
       <header className="flex flex-col gap-3">
         <div className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-foreground text-background">
-            <CursorLogo className="h-4 w-4" monochrome />
+            <CursorLogo className="h-4 w-4" />
           </div>
           <span className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
             Ambassador Program
