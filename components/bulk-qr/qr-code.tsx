@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import type { CardTheme, QrStyle } from "@/lib/bulk-qr/types"
+import { getCardTokens, type CardTheme, type QrStyle } from "@/lib/bulk-qr/types"
 import { cn } from "@/lib/utils"
 
 interface QrCodeProps {
@@ -28,12 +28,13 @@ const RENDER_SIZE = 1024
  * "hidden background dots" clear area.
  */
 function buildLogoDataUrl(theme: CardTheme): string {
-  const bg = theme === "dark" ? "#ffffff" : "#0a0a0a"
-  const fg = theme === "dark" ? "#0a0a0a" : "#ffffff"
+  const tokens = getCardTokens(theme)
+  // Circle fill matches the card's inner container so the logo badge blends
+  // seamlessly into the cleared QR area; the mark itself uses the foreground.
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
-      <circle cx="80" cy="80" r="76" fill="${bg}" />
-      <g transform="translate(36 30) scale(0.6667)" fill="${fg}">
+      <circle cx="80" cy="80" r="76" fill="${tokens.container}" />
+      <g transform="translate(36 30) scale(0.6667)" fill="${tokens.foreground}">
         <path d="M129.37 35.5041L69.1266 0.83515C67.1921 -0.278383 64.8051 -0.278383 62.8706 0.83515L2.63021 35.5041C1.00401 36.44 0 38.1709 0 40.0456V109.956C0 111.83 1.00401 113.561 2.63021 114.497L62.8734 149.166C64.8079 150.28 67.1949 150.28 69.1294 149.166L129.373 114.497C130.999 113.561 132.003 111.83 132.003 109.956V40.0456C132.003 38.1709 130.999 36.44 129.373 35.5041H129.37ZM125.586 42.8478L67.4296 143.252C67.0365 143.928 65.9986 143.652 65.9986 142.868V77.1249C65.9986 75.8112 65.2944 74.5962 64.1518 73.9365L7.0337 41.0661C6.35494 40.6743 6.6321 39.6397 7.41834 39.6397H123.73C125.382 39.6397 126.414 41.4241 125.589 42.8506H125.586V42.8478Z" />
       </g>
     </svg>
@@ -71,10 +72,8 @@ export function QrCode({ value, size, style, theme, className }: QrCodeProps) {
       const { default: QRCodeStyling } = await import("qr-code-styling")
       if (cancelled || !host) return
 
-      const isDark = theme === "dark"
-      const dark = "#0a0a0a"
-      const light = "#ffffff"
-      const fg = isDark ? light : dark
+      const tokens = getCardTokens(theme)
+      const fg = tokens.foreground
       const variant = getStyleVariant(style)
 
       const options = {
