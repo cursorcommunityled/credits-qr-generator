@@ -28,7 +28,7 @@ export const QrCardBack = forwardRef<HTMLDivElement, QrCardBackProps>(function Q
   return (
     <div
       ref={ref}
-      className={cn("relative overflow-hidden p-2 tracking-[-0.07em]", className)}
+      className={cn("relative overflow-hidden p-2 tracking-[-0.06em]", className)}
       style={{
         width: CARD_WIDTH,
         height: CARD_HEIGHT,
