@@ -66,7 +66,7 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
                 Cursor credits
               </span>
               <h2
-                className="text-balance text-[13px] font-semibold leading-tight"
+                className="text-balance text-[11px] font-semibold leading-tight"
                 style={{ color: tokens.accent }}
               >
                 Scan to redeem
@@ -74,7 +74,7 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
             </div>
 
             <ol
-              className="flex flex-col gap-1 text-[9px] leading-snug"
+              className="flex flex-col gap-1 text-[8px] leading-snug"
               style={{ color: tokens.foreground }}
             >
               <li className="flex gap-1">
