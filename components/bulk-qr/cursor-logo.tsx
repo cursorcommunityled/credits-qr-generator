@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils'
 
 interface CursorLogoProps {
   className?: string
@@ -9,11 +9,11 @@ interface CursorLogoProps {
  * Official Cursor mark — the angular prism silhouette.
  * Uses `currentColor` so it automatically adapts to the theme's foreground.
  */
-export function CursorLogo({ className, title = "Cursor" }: CursorLogoProps) {
+export function CursorLogo({ className, title = 'Cursor' }: CursorLogoProps) {
   return (
     <svg
       viewBox="0 0 132 150"
-      className={cn("block", className)}
+      className={cn('block', className)}
       role="img"
       aria-label={title}
       fill="none"
@@ -34,7 +34,7 @@ export function CursorLogo({ className, title = "Cursor" }: CursorLogoProps) {
  */
 export function CursorWordmark({
   className,
-  title = "cursor",
+  title = 'cursor',
 }: {
   className?: string
   title?: string
@@ -42,7 +42,7 @@ export function CursorWordmark({
   return (
     <svg
       viewBox="0 0 1655.29 278.83"
-      className={cn("block", className)}
+      className={cn('block', className)}
       role="img"
       aria-label={title}
       xmlns="http://www.w3.org/2000/svg"

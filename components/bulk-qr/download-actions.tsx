@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { Download, Package, AlertCircle } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
+import { useState } from 'react'
+import { Download, Package, AlertCircle } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Progress } from '@/components/ui/progress'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,17 +12,17 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
-import { Spinner } from "@/components/ui/spinner"
+} from '@/components/ui/alert-dialog'
+import { Spinner } from '@/components/ui/spinner'
 import {
   nodeToPngBlob,
   sanitizeFileSegment,
   triggerDownload,
   zipCards,
   type CardAsset,
-} from "@/lib/bulk-qr/export"
-import type { CardConfig, RedeemCode } from "@/lib/bulk-qr/types"
-import { PdfExportDialog } from "./pdf-export-dialog.lazy"
+} from '@/lib/bulk-qr/export'
+import type { CardConfig, RedeemCode } from '@/lib/bulk-qr/types'
+import { PdfExportDialog } from './pdf-export-dialog.lazy'
 
 interface DownloadActionsProps {
   codes: RedeemCode[]
@@ -36,9 +36,9 @@ interface DownloadActionsProps {
 }
 
 type Status =
-  | { kind: "idle" }
-  | { kind: "working"; label: string; progress: number }
-  | { kind: "error"; message: string }
+  | { kind: 'idle' }
+  | { kind: 'working'; label: string; progress: number }
+  | { kind: 'error'; message: string }
 
 export function DownloadActions({
   codes,
@@ -46,21 +46,24 @@ export function DownloadActions({
   getFrontNode,
   getBackNode,
 }: DownloadActionsProps) {
-  const [status, setStatus] = useState<Status>({ kind: "idle" })
+  const [status, setStatus] = useState<Status>({ kind: 'idle' })
 
   async function handleDownloadBack() {
     try {
       const node = getBackNode()
-      if (!node) throw new Error("The back card is not available.")
-      setStatus({ kind: "working", label: "Rendering back…", progress: 100 })
+      if (!node) throw new Error('The back card is not available.')
+      setStatus({ kind: 'working', label: 'Rendering back…', progress: 100 })
       const blob = await nodeToPngBlob(node)
-      const slug = sanitizeFileSegment(config.eventName) || "cursor"
+      const slug = sanitizeFileSegment(config.eventName) || 'cursor'
       triggerDownload(blob, `${slug}-back.png`)
-      setStatus({ kind: "idle" })
+      setStatus({ kind: 'idle' })
     } catch (err) {
       setStatus({
-        kind: "error",
-        message: err instanceof Error ? err.message : "Failed to render the card back.",
+        kind: 'error',
+        message:
+          err instanceof Error
+            ? err.message
+            : 'Failed to render the card back.',
       })
     }
   }
@@ -71,46 +74,47 @@ export function DownloadActions({
       let completed = 0
       const assets: CardAsset[] = []
 
-      setStatus({ kind: "working", label: "Rendering cards…", progress: 0 })
+      setStatus({ kind: 'working', label: 'Rendering cards…', progress: 0 })
 
       for (const code of codes) {
         const node = getFrontNode(code.id)
         if (!node) throw new Error(`Missing card for ${code.code}.`)
         const blob = await nodeToPngBlob(node)
-        const fileName = `${String(completed + 1).padStart(3, "0")}-${sanitizeFileSegment(code.code) || "code"}.png`
+        const fileName = `${String(completed + 1).padStart(3, '0')}-${sanitizeFileSegment(code.code) || 'code'}.png`
         assets.push({ fileName, blob })
         completed += 1
         setStatus({
-          kind: "working",
+          kind: 'working',
           label: `Rendered ${completed} of ${codes.length} cards…`,
           progress: Math.round((completed / total) * 100),
         })
       }
 
       const backNode = getBackNode()
-      if (!backNode) throw new Error("The back card is not available.")
+      if (!backNode) throw new Error('The back card is not available.')
       const backBlob = await nodeToPngBlob(backNode)
       completed += 1
       setStatus({
-        kind: "working",
-        label: "Packaging ZIP…",
+        kind: 'working',
+        label: 'Packaging ZIP…',
         progress: Math.round((completed / total) * 100),
       })
 
       const zip = await zipCards(assets)
       const combined = await appendBackToZip(zip, backBlob)
-      const slug = sanitizeFileSegment(config.eventName) || "cursor"
+      const slug = sanitizeFileSegment(config.eventName) || 'cursor'
       triggerDownload(combined, `${slug}-cards.zip`)
-      setStatus({ kind: "idle" })
+      setStatus({ kind: 'idle' })
     } catch (err) {
       setStatus({
-        kind: "error",
-        message: err instanceof Error ? err.message : "Failed to generate the ZIP.",
+        kind: 'error',
+        message:
+          err instanceof Error ? err.message : 'Failed to generate the ZIP.',
       })
     }
   }
 
-  const isWorking = status.kind === "working"
+  const isWorking = status.kind === 'working'
 
   return (
     <div className="flex flex-col gap-3">
@@ -156,23 +160,26 @@ export function DownloadActions({
       ) : null}
 
       <AlertDialog
-        open={status.kind === "error"}
+        open={status.kind === 'error'}
         onOpenChange={(open) => {
-          if (!open) setStatus({ kind: "idle" })
+          if (!open) setStatus({ kind: 'idle' })
         }}
       >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2">
-              <AlertCircle className="h-4 w-4 text-destructive" aria-hidden="true" />
+              <AlertCircle
+                className="h-4 w-4 text-destructive"
+                aria-hidden="true"
+              />
               Export failed
             </AlertDialogTitle>
             <AlertDialogDescription>
-              {status.kind === "error" ? status.message : null}
+              {status.kind === 'error' ? status.message : null}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogAction onClick={() => setStatus({ kind: "idle" })}>
+            <AlertDialogAction onClick={() => setStatus({ kind: 'idle' })}>
               Dismiss
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -184,8 +191,8 @@ export function DownloadActions({
 
 async function appendBackToZip(zipBlob: Blob, backBlob: Blob): Promise<Blob> {
   // Re-open the generated zip to append the shared back image at the root.
-  const { default: JSZip } = await import("jszip")
+  const { default: JSZip } = await import('jszip')
   const zip = await JSZip.loadAsync(zipBlob)
-  zip.file("back.png", backBlob)
-  return zip.generateAsync({ type: "blob" })
+  zip.file('back.png', backBlob)
+  return zip.generateAsync({ type: 'blob' })
 }

@@ -1,6 +1,6 @@
-import type { jsPDF as JsPDF } from "jspdf"
+import type { jsPDF as JsPDF } from 'jspdf'
 
-import { CARD_ASPECT } from "./types"
+import { CARD_ASPECT } from './types'
 
 // NOTE: jsPDF's default export condition resolves to its Node.js build, whose
 // transitive `fflate` dep uses a dynamic `new Worker(...)` call that Next.js's
@@ -26,17 +26,32 @@ export interface PaperSizeDefinition {
  * users can type their own dimensions.
  */
 export const PAPER_SIZES: readonly PaperSizeDefinition[] = [
-  { id: "a4", label: "A4 — 210 × 297 mm", widthMm: 210, heightMm: 297 },
-  { id: "a3", label: "A3 — 297 × 420 mm", widthMm: 297, heightMm: 420 },
-  { id: "a5", label: "A5 — 148 × 210 mm", widthMm: 148, heightMm: 210 },
-  { id: "letter", label: "Letter — 215.9 × 279.4 mm", widthMm: 215.9, heightMm: 279.4 },
-  { id: "legal", label: "Legal — 215.9 × 355.6 mm", widthMm: 215.9, heightMm: 355.6 },
-  { id: "tabloid", label: "Tabloid — 279.4 × 431.8 mm", widthMm: 279.4, heightMm: 431.8 },
+  { id: 'a4', label: 'A4 — 210 × 297 mm', widthMm: 210, heightMm: 297 },
+  { id: 'a3', label: 'A3 — 297 × 420 mm', widthMm: 297, heightMm: 420 },
+  { id: 'a5', label: 'A5 — 148 × 210 mm', widthMm: 148, heightMm: 210 },
+  {
+    id: 'letter',
+    label: 'Letter — 215.9 × 279.4 mm',
+    widthMm: 215.9,
+    heightMm: 279.4,
+  },
+  {
+    id: 'legal',
+    label: 'Legal — 215.9 × 355.6 mm',
+    widthMm: 215.9,
+    heightMm: 355.6,
+  },
+  {
+    id: 'tabloid',
+    label: 'Tabloid — 279.4 × 431.8 mm',
+    widthMm: 279.4,
+    heightMm: 431.8,
+  },
 ] as const
 
-export const CUSTOM_PAPER_ID = "custom" as const
+export const CUSTOM_PAPER_ID = 'custom' as const
 
-export type PaperOrientation = "portrait" | "landscape"
+export type PaperOrientation = 'portrait' | 'landscape'
 
 /**
  * User-facing settings captured in the PDF export dialog. {@link cardWidthMm}
@@ -56,10 +71,10 @@ export interface PdfExportSettings {
 }
 
 export const DEFAULT_PDF_SETTINGS: PdfExportSettings = {
-  paperId: "a4",
+  paperId: 'a4',
   customWidthMm: 210,
   customHeightMm: 297,
-  orientation: "portrait",
+  orientation: 'portrait',
   marginMm: 10,
   gapMm: 5,
   cardWidthMm: 85,
@@ -96,7 +111,10 @@ export interface PdfLayout {
 }
 
 export function resolvePaperSize(
-  settings: Pick<PdfExportSettings, "paperId" | "customWidthMm" | "customHeightMm">,
+  settings: Pick<
+    PdfExportSettings,
+    'paperId' | 'customWidthMm' | 'customHeightMm'
+  >,
 ): { widthMm: number; heightMm: number } {
   if (settings.paperId === CUSTOM_PAPER_ID) {
     return {
@@ -115,7 +133,7 @@ export function resolvePaperSize(
 export function computePdfLayout(settings: PdfExportSettings): PdfLayout {
   const paper = resolvePaperSize(settings)
   const [pageWidthMm, pageHeightMm] =
-    settings.orientation === "portrait"
+    settings.orientation === 'portrait'
       ? [paper.widthMm, paper.heightMm]
       : [paper.heightMm, paper.widthMm]
 
@@ -195,25 +213,25 @@ export async function generateCardsPdf({
 }: GeneratePdfInput): Promise<Blob> {
   if (layout.perPage <= 0) {
     throw new Error(
-      "No cards fit on the page. Reduce margins, gaps, or card width.",
+      'No cards fit on the page. Reduce margins, gaps, or card width.',
     )
   }
   if (fronts.length === 0) {
-    throw new Error("There are no cards to export.")
+    throw new Error('There are no cards to export.')
   }
 
-  const orientation: "portrait" | "landscape" =
-    layout.pageWidthMm >= layout.pageHeightMm ? "landscape" : "portrait"
+  const orientation: 'portrait' | 'landscape' =
+    layout.pageWidthMm >= layout.pageHeightMm ? 'landscape' : 'portrait'
 
   // Import the browser ES build directly — see the file-level note. This
   // path is stable (published under `"./dist/*"` in jspdf's exports map).
-  const mod = (await import("jspdf/dist/jspdf.es.min.js")) as {
+  const mod = (await import('jspdf/dist/jspdf.es.min.js')) as {
     jsPDF: typeof JsPDF
   }
   const { jsPDF } = mod
   const doc = new jsPDF({
     orientation,
-    unit: "mm",
+    unit: 'mm',
     format: [layout.pageWidthMm, layout.pageHeightMm],
     compress: true,
   })
@@ -221,7 +239,7 @@ export async function generateCardsPdf({
   if (documentTitle) {
     doc.setDocumentProperties({
       title: documentTitle,
-      creator: "Cursor Bulk QR Generator",
+      creator: 'Cursor Bulk QR Generator',
     })
   }
 
@@ -252,13 +270,13 @@ export async function generateCardsPdf({
       const y = layout.offsetYMm + row * (layout.cardHeightMm + layout.gapMm)
       doc.addImage(
         slice[idx],
-        "PNG",
+        'PNG',
         x,
         y,
         layout.cardWidthMm,
         layout.cardHeightMm,
         undefined,
-        "FAST",
+        'FAST',
       )
       drawn += 1
       onProgress?.(drawn, totalWork)
@@ -275,20 +293,20 @@ export async function generateCardsPdf({
       const y = layout.offsetYMm + row * (layout.cardHeightMm + layout.gapMm)
       doc.addImage(
         backDataUrl,
-        "PNG",
+        'PNG',
         x,
         y,
         layout.cardWidthMm,
         layout.cardHeightMm,
         undefined,
-        "FAST",
+        'FAST',
       )
       drawn += 1
       onProgress?.(drawn, totalWork)
     }
   }
 
-  return doc.output("blob")
+  return doc.output('blob')
 }
 
 function blobToDataUrl(blob: Blob): Promise<string> {
@@ -296,13 +314,14 @@ function blobToDataUrl(blob: Blob): Promise<string> {
     const reader = new FileReader()
     reader.onload = () => {
       const result = reader.result
-      if (typeof result === "string") {
+      if (typeof result === 'string') {
         resolve(result)
       } else {
-        reject(new Error("Unable to read image blob as a data URL."))
+        reject(new Error('Unable to read image blob as a data URL.'))
       }
     }
-    reader.onerror = () => reject(reader.error ?? new Error("Blob read failed."))
+    reader.onerror = () =>
+      reject(reader.error ?? new Error('Blob read failed.'))
     reader.readAsDataURL(blob)
   })
 }

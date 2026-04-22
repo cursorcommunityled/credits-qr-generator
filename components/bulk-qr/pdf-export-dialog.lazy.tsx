@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import dynamic from "next/dynamic"
+import dynamic from 'next/dynamic'
 
 /**
  * jsPDF bundles a Node.js build whose transitive `fflate` dependency uses a
@@ -10,6 +10,6 @@ import dynamic from "next/dynamic"
  * only exists in the browser, where jsPDF belongs.
  */
 export const PdfExportDialog = dynamic(
-  () => import("./pdf-export-dialog").then((mod) => mod.PdfExportDialog),
+  () => import('./pdf-export-dialog').then((mod) => mod.PdfExportDialog),
   { ssr: false },
 )

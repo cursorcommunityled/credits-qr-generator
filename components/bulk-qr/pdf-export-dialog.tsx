@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import { useMemo, useState } from "react"
-import { AlertCircle, Download, FileText } from "lucide-react"
+import { useMemo, useState } from 'react'
+import { AlertCircle, Download, FileText } from 'lucide-react'
 
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -12,27 +12,27 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Progress } from "@/components/ui/progress"
-import { Spinner } from "@/components/ui/spinner"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+} from '@/components/ui/dialog'
+import { Progress } from '@/components/ui/progress'
+import { Spinner } from '@/components/ui/spinner'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import {
   nodeToPngBlob,
   PRINT_SCALE,
   sanitizeFileSegment,
   triggerDownload,
-} from "@/lib/bulk-qr/export"
+} from '@/lib/bulk-qr/export'
 import {
   computePdfLayout,
   countPdfPages,
   DEFAULT_PDF_SETTINGS,
   generateCardsPdf,
   type PdfExportSettings,
-} from "@/lib/bulk-qr/pdf"
-import type { CardConfig, RedeemCode } from "@/lib/bulk-qr/types"
+} from '@/lib/bulk-qr/pdf'
+import type { CardConfig, RedeemCode } from '@/lib/bulk-qr/types'
 
-import { PdfExportFields } from "./pdf-export-fields"
-import { PdfLayoutPreview } from "./pdf-layout-preview"
+import { PdfExportFields } from './pdf-export-fields'
+import { PdfLayoutPreview } from './pdf-layout-preview'
 
 interface PdfExportDialogProps {
   codes: RedeemCode[]
@@ -48,10 +48,10 @@ interface PdfExportDialogProps {
 }
 
 type Status =
-  | { kind: "idle" }
-  | { kind: "rendering"; done: number; total: number }
-  | { kind: "packaging" }
-  | { kind: "error"; message: string }
+  | { kind: 'idle' }
+  | { kind: 'rendering'; done: number; total: number }
+  | { kind: 'packaging' }
+  | { kind: 'error'; message: string }
 
 /**
  * Orchestrates the "Export as PDF" flow:
@@ -68,20 +68,21 @@ export function PdfExportDialog({
   externallyDisabled,
 }: PdfExportDialogProps) {
   const [open, setOpen] = useState(false)
-  const [settings, setSettings] = useState<PdfExportSettings>(DEFAULT_PDF_SETTINGS)
-  const [status, setStatus] = useState<Status>({ kind: "idle" })
+  const [settings, setSettings] =
+    useState<PdfExportSettings>(DEFAULT_PDF_SETTINGS)
+  const [status, setStatus] = useState<Status>({ kind: 'idle' })
 
   const layout = useMemo(() => computePdfLayout(settings), [settings])
   const totalPages = countPdfPages(codes.length, layout)
   const cardsOnFirstPage = Math.min(codes.length, layout.perPage)
   const canDownload = layout.perPage > 0 && codes.length > 0
 
-  const isBusy = status.kind === "rendering" || status.kind === "packaging"
+  const isBusy = status.kind === 'rendering' || status.kind === 'packaging'
 
   async function handleDownload() {
     if (!canDownload) return
     try {
-      setStatus({ kind: "rendering", done: 0, total: codes.length })
+      setStatus({ kind: 'rendering', done: 0, total: codes.length })
 
       const fronts: Blob[] = []
       for (let i = 0; i < codes.length; i += 1) {
@@ -91,20 +92,22 @@ export function PdfExportDialog({
         }
         const blob = await nodeToPngBlob(node, { pixelRatio: PRINT_SCALE })
         fronts.push(blob)
-        setStatus({ kind: "rendering", done: i + 1, total: codes.length })
+        setStatus({ kind: 'rendering', done: i + 1, total: codes.length })
       }
 
-      setStatus({ kind: "packaging" })
+      setStatus({ kind: 'packaging' })
 
       // Render the shared back exactly once — it's identical for every code,
       // so a single tiled page is appended to the PDF.
       const backNode = getBackNode()
       if (!backNode) {
-        throw new Error("The card back is not available.")
+        throw new Error('The card back is not available.')
       }
-      const backBlob = await nodeToPngBlob(backNode, { pixelRatio: PRINT_SCALE })
+      const backBlob = await nodeToPngBlob(backNode, {
+        pixelRatio: PRINT_SCALE,
+      })
 
-      const slug = sanitizeFileSegment(config.eventName) || "cursor"
+      const slug = sanitizeFileSegment(config.eventName) || 'cursor'
       const pdfBlob = await generateCardsPdf({
         fronts,
         back: backBlob,
@@ -113,13 +116,13 @@ export function PdfExportDialog({
       })
       triggerDownload(pdfBlob, `${slug}-cards.pdf`)
 
-      setStatus({ kind: "idle" })
+      setStatus({ kind: 'idle' })
       setOpen(false)
     } catch (err) {
       setStatus({
-        kind: "error",
+        kind: 'error',
         message:
-          err instanceof Error ? err.message : "Failed to generate the PDF.",
+          err instanceof Error ? err.message : 'Failed to generate the PDF.',
       })
     }
   }
@@ -127,7 +130,7 @@ export function PdfExportDialog({
   function handleOpenChange(nextOpen: boolean) {
     if (isBusy) return // lock while working
     setOpen(nextOpen)
-    if (!nextOpen) setStatus({ kind: "idle" })
+    if (!nextOpen) setStatus({ kind: 'idle' })
   }
 
   return (
@@ -161,7 +164,10 @@ export function PdfExportDialog({
           />
 
           <div className="flex flex-col gap-3">
-            <PdfLayoutPreview layout={layout} filledOnFirstPage={cardsOnFirstPage} />
+            <PdfLayoutPreview
+              layout={layout}
+              filledOnFirstPage={cardsOnFirstPage}
+            />
             <LayoutStats
               cols={layout.cols}
               rows={layout.rows}
@@ -172,7 +178,7 @@ export function PdfExportDialog({
           </div>
         </div>
 
-        {status.kind === "error" ? (
+        {status.kind === 'error' ? (
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" aria-hidden="true" />
             <AlertTitle>Export failed</AlertTitle>
@@ -184,19 +190,19 @@ export function PdfExportDialog({
           <div className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between text-xs text-muted-foreground">
               <span>
-                {status.kind === "rendering"
+                {status.kind === 'rendering'
                   ? `Rendering ${status.done} of ${status.total} cards…`
-                  : "Assembling PDF…"}
+                  : 'Assembling PDF…'}
               </span>
               <span>
-                {status.kind === "rendering" && status.total > 0
+                {status.kind === 'rendering' && status.total > 0
                   ? `${Math.round((status.done / status.total) * 100)}%`
                   : null}
               </span>
             </div>
             <Progress
               value={
-                status.kind === "rendering" && status.total > 0
+                status.kind === 'rendering' && status.total > 0
                   ? Math.round((status.done / status.total) * 100)
                   : undefined
               }
@@ -247,23 +253,24 @@ function LayoutStats({
   const totalPages = hasFronts ? totalFrontPages + 1 : 0
   return (
     <dl className="grid grid-cols-2 gap-3 rounded-lg border border-border bg-card p-3 text-sm">
-      <StatRow label="Cards per page" value={perPage > 0 ? `${cols} × ${rows} = ${perPage}` : "0"} />
+      <StatRow
+        label="Cards per page"
+        value={perPage > 0 ? `${cols} × ${rows} = ${perPage}` : '0'}
+      />
       <StatRow label="Total codes" value={`${totalCards}`} />
       <StatRow
         label="Pages"
         value={
-          hasFronts
-            ? `${totalPages} (${totalFrontPages} front + 1 back)`
-            : "0"
+          hasFronts ? `${totalPages} (${totalFrontPages} front + 1 back)` : '0'
         }
-        tone={totalPages === 0 ? "warn" : "default"}
+        tone={totalPages === 0 ? 'warn' : 'default'}
       />
       <StatRow
         label="Last front page fill"
         value={
           perPage > 0 && totalCards > 0
             ? `${totalCards - (totalFrontPages - 1) * perPage} / ${perPage}`
-            : "—"
+            : '—'
         }
       />
     </dl>
@@ -273,10 +280,10 @@ function LayoutStats({
 interface StatRowProps {
   label: string
   value: string
-  tone?: "default" | "warn"
+  tone?: 'default' | 'warn'
 }
 
-function StatRow({ label, value, tone = "default" }: StatRowProps) {
+function StatRow({ label, value, tone = 'default' }: StatRowProps) {
   return (
     <div className="flex flex-col gap-0.5">
       <dt className="text-xs uppercase tracking-wide text-muted-foreground">
@@ -284,9 +291,9 @@ function StatRow({ label, value, tone = "default" }: StatRowProps) {
       </dt>
       <dd
         className={
-          tone === "warn"
-            ? "font-mono text-sm tabular-nums text-destructive"
-            : "font-mono text-sm tabular-nums text-foreground"
+          tone === 'warn'
+            ? 'font-mono text-sm tabular-nums text-destructive'
+            : 'font-mono text-sm tabular-nums text-foreground'
         }
       >
         {value}

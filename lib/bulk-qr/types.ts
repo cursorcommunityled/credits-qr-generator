@@ -1,7 +1,7 @@
-import type { CardLocale } from "./i18n"
+import type { CardLocale } from './i18n'
 
-export type CardTheme = "light" | "dark"
-export type QrStyle = "square" | "dots"
+export type CardTheme = 'light' | 'dark'
+export type QrStyle = 'square' | 'dots'
 
 export interface RedeemCode {
   id: string
@@ -37,25 +37,25 @@ export interface CardColorTokens {
 }
 
 const DARK_CARD_TOKENS: CardColorTokens = {
-  background: "#15120B",
-  container: "#1C1B16",
-  border: "#33322D",
-  foreground: "#FDFDFB",
-  mutedForeground: "#969590",
-  accent: "#D95910",
+  background: '#15120B',
+  container: '#1C1B16',
+  border: '#33322D',
+  foreground: '#FDFDFB',
+  mutedForeground: '#969590',
+  accent: '#D95910',
 }
 
 const LIGHT_CARD_TOKENS: CardColorTokens = {
-  background: "#FAFAF9",
-  container: "#F5F5F4",
-  border: "#D6D3D1",
-  foreground: "#0C0A09",
-  mutedForeground: "#79716B",
-  accent: "#CE530D",
+  background: '#FAFAF9',
+  container: '#F5F5F4',
+  border: '#D6D3D1',
+  foreground: '#0C0A09',
+  mutedForeground: '#79716B',
+  accent: '#CE530D',
 }
 
 export function getCardTokens(theme: CardTheme): CardColorTokens {
-  return theme === "dark" ? DARK_CARD_TOKENS : LIGHT_CARD_TOKENS
+  return theme === 'dark' ? DARK_CARD_TOKENS : LIGHT_CARD_TOKENS
 }
 
 /** Physical card dimensions, in CSS pixels. This is the exact size used for export. */

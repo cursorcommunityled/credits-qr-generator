@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import { forwardRef, useImperativeHandle, useRef } from "react"
-import { QrCardBack } from "./qr-card-back"
-import { QrCardFront } from "./qr-card-front"
-import type { CardConfig, RedeemCode } from "@/lib/bulk-qr/types"
+import { forwardRef, useImperativeHandle, useRef } from 'react'
+import { QrCardBack } from './qr-card-back'
+import { QrCardFront } from './qr-card-front'
+import type { CardConfig, RedeemCode } from '@/lib/bulk-qr/types'
 
 export interface ExportStageHandle {
   getFrontNode: (codeId: string) => HTMLElement | null
@@ -38,10 +38,10 @@ export const ExportStage = forwardRef<ExportStageHandle, ExportStageProps>(
       <div
         aria-hidden="true"
         style={{
-          position: "fixed",
+          position: 'fixed',
           left: -10000,
           top: 0,
-          pointerEvents: "none",
+          pointerEvents: 'none',
           opacity: 0,
         }}
       >

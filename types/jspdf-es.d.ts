@@ -5,6 +5,6 @@
  *
  * See {@link ../lib/bulk-qr/pdf.ts} for why we import this deep path.
  */
-declare module "jspdf/dist/jspdf.es.min.js" {
-  export * from "jspdf"
+declare module 'jspdf/dist/jspdf.es.min.js' {
+  export * from 'jspdf'
 }

@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import { useMemo } from "react"
-import type { PdfLayout } from "@/lib/bulk-qr/pdf"
+import { useMemo } from 'react'
+import type { PdfLayout } from '@/lib/bulk-qr/pdf'
 
 interface PdfLayoutPreviewProps {
   layout: PdfLayout
@@ -35,7 +35,8 @@ export function PdfLayoutPreview({
 
   const cards = useMemo(() => {
     if (cols <= 0 || rows <= 0) return []
-    const items: Array<{ x: number; y: number; filled: boolean; key: string }> = []
+    const items: Array<{ x: number; y: number; filled: boolean; key: string }> =
+      []
     for (let row = 0; row < rows; row += 1) {
       for (let col = 0; col < cols; col += 1) {
         const index = row * cols + col
@@ -48,7 +49,16 @@ export function PdfLayoutPreview({
       }
     }
     return items
-  }, [cols, rows, offsetXMm, offsetYMm, cardWidthMm, cardHeightMm, gapMm, filledOnFirstPage])
+  }, [
+    cols,
+    rows,
+    offsetXMm,
+    offsetYMm,
+    cardWidthMm,
+    cardHeightMm,
+    gapMm,
+    filledOnFirstPage,
+  ])
 
   // Scale strokes so they read as ~1px on screen regardless of paper size.
   // The preview container is ~400px wide; the factor keeps strokes thin at any zoom.
@@ -97,11 +107,7 @@ export function PdfLayoutPreview({
               height={cardHeightMm}
               rx={cardWidthMm * 0.025}
               ry={cardWidthMm * 0.025}
-              className={
-                card.filled
-                  ? "fill-foreground/85"
-                  : "fill-muted/60"
-              }
+              className={card.filled ? 'fill-foreground/85' : 'fill-muted/60'}
               stroke="none"
             />
             {/* Tiny QR dot to hint card orientation */}
@@ -111,7 +117,7 @@ export function PdfLayoutPreview({
               width={cardHeightMm * 0.55}
               height={cardHeightMm * 0.55}
               className={
-                card.filled ? "fill-background" : "fill-muted-foreground/30"
+                card.filled ? 'fill-background' : 'fill-muted-foreground/30'
               }
               rx={cardHeightMm * 0.04}
               ry={cardHeightMm * 0.04}
@@ -128,7 +134,7 @@ export function PdfLayoutPreview({
             className="fill-destructive"
             style={{
               fontSize: Math.min(pageWidthMm, pageHeightMm) * 0.05,
-              fontFamily: "var(--font-sans, system-ui, sans-serif)",
+              fontFamily: 'var(--font-sans, system-ui, sans-serif)',
             }}
           >
             No cards fit

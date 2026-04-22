@@ -1,8 +1,12 @@
-"use client"
+'use client'
 
-import { useEffect, useRef } from "react"
-import { getCardTokens, type CardTheme, type QrStyle } from "@/lib/bulk-qr/types"
-import { cn } from "@/lib/utils"
+import { useEffect, useRef } from 'react'
+import {
+  getCardTokens,
+  type CardTheme,
+  type QrStyle,
+} from '@/lib/bulk-qr/types'
+import { cn } from '@/lib/utils'
 
 interface QrCodeProps {
   value: string
@@ -39,13 +43,13 @@ function buildLogoDataUrl(theme: CardTheme): string {
       </g>
     </svg>
   `.trim()
-  if (typeof window === "undefined") return ""
+  if (typeof window === 'undefined') return ''
   return `data:image/svg+xml;base64,${window.btoa(svg)}`
 }
 
-type QrDotType = "dots" | "square"
-type QrCornerSquareType = "extra-rounded" | "square"
-type QrCornerDotType = "dot" | "square"
+type QrDotType = 'dots' | 'square'
+type QrCornerSquareType = 'extra-rounded' | 'square'
+type QrCornerDotType = 'dot' | 'square'
 
 interface QrStyleVariant {
   dots: QrDotType
@@ -54,10 +58,10 @@ interface QrStyleVariant {
 }
 
 function getStyleVariant(style: QrStyle): QrStyleVariant {
-  if (style === "dots") {
-    return { dots: "dots", cornersSquare: "extra-rounded", cornersDot: "dot" }
+  if (style === 'dots') {
+    return { dots: 'dots', cornersSquare: 'extra-rounded', cornersDot: 'dot' }
   }
-  return { dots: "square", cornersSquare: "square", cornersDot: "square" }
+  return { dots: 'square', cornersSquare: 'square', cornersDot: 'square' }
 }
 
 export function QrCode({ value, size, style, theme, className }: QrCodeProps) {
@@ -69,7 +73,7 @@ export function QrCode({ value, size, style, theme, className }: QrCodeProps) {
     if (!host) return
 
     async function render() {
-      const { default: QRCodeStyling } = await import("qr-code-styling")
+      const { default: QRCodeStyling } = await import('qr-code-styling')
       if (cancelled || !host) return
 
       const tokens = getCardTokens(theme)
@@ -78,20 +82,20 @@ export function QrCode({ value, size, style, theme, className }: QrCodeProps) {
 
       const options = {
         // SVG output is resolution-independent — CSS resizes it cleanly.
-        type: "svg" as const,
+        type: 'svg' as const,
         width: RENDER_SIZE,
         height: RENDER_SIZE,
         data: value,
         margin: 0,
         qrOptions: {
-          errorCorrectionLevel: "H" as const,
+          errorCorrectionLevel: 'H' as const,
         },
         dotsOptions: {
           type: variant.dots,
           color: fg,
         },
         backgroundOptions: {
-          color: "transparent",
+          color: 'transparent',
         },
         cornersSquareOptions: {
           type: variant.cornersSquare,
@@ -106,7 +110,7 @@ export function QrCode({ value, size, style, theme, className }: QrCodeProps) {
           hideBackgroundDots: true,
           imageSize: 0.26,
           margin: 4,
-          crossOrigin: "anonymous" as const,
+          crossOrigin: 'anonymous' as const,
         },
       }
 
@@ -118,16 +122,16 @@ export function QrCode({ value, size, style, theme, className }: QrCodeProps) {
 
       // Always recreate: qr-code-styling's `update()` does not reliably
       // swap dot/corner types between "dots" and "square".
-      host.innerHTML = ""
+      host.innerHTML = ''
       instance.append(host)
 
       // Force the rendered SVG to fill the host so CSS can scale it down.
-      const svg = host.querySelector("svg")
+      const svg = host.querySelector('svg')
       if (svg) {
-        svg.setAttribute("width", "100%")
-        svg.setAttribute("height", "100%")
-        svg.setAttribute("preserveAspectRatio", "xMidYMid meet")
-        svg.style.display = "block"
+        svg.setAttribute('width', '100%')
+        svg.setAttribute('height', '100%')
+        svg.setAttribute('preserveAspectRatio', 'xMidYMid meet')
+        svg.style.display = 'block'
       }
     }
 
@@ -140,7 +144,10 @@ export function QrCode({ value, size, style, theme, className }: QrCodeProps) {
   return (
     <div
       ref={hostRef}
-      className={cn("flex items-center justify-center overflow-hidden", className)}
+      className={cn(
+        'flex items-center justify-center overflow-hidden',
+        className,
+      )}
       style={{ width: size, height: size }}
       aria-label="QR code"
     />
