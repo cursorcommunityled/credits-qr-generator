@@ -9,14 +9,32 @@ import { QrCardFront } from "./qr-card-front"
 import { QrCardBack } from "./qr-card-back"
 import { CARD_HEIGHT, CARD_WIDTH, PREVIEW_SCALE, type CardConfig, type RedeemCode } from "@/lib/bulk-qr/types"
 
+export type CardFace = "front" | "back"
+
 interface CardPreviewProps {
   codes: RedeemCode[]
   config: CardConfig
+  /**
+   * Controlled face value. When provided together with {@link onFaceChange},
+   * the parent fully owns which side is visible.
+   */
+  face?: CardFace
+  onFaceChange?: (face: CardFace) => void
 }
 
-export function CardPreview({ codes, config }: CardPreviewProps) {
+export function CardPreview({
+  codes,
+  config,
+  face: faceProp,
+  onFaceChange,
+}: CardPreviewProps) {
   const [index, setIndex] = useState(0)
-  const [face, setFace] = useState<"front" | "back">("front")
+  const [internalFace, setInternalFace] = useState<CardFace>("front")
+  const face = faceProp ?? internalFace
+  const setFace = (next: CardFace) => {
+    if (faceProp === undefined) setInternalFace(next)
+    onFaceChange?.(next)
+  }
 
   const currentIndex = Math.min(index, Math.max(0, codes.length - 1))
   const currentCode = codes[currentIndex]
@@ -37,7 +55,7 @@ export function CardPreview({ codes, config }: CardPreviewProps) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <Tabs value={face} onValueChange={(value) => setFace(value as "front" | "back")}>
+        <Tabs value={face} onValueChange={(value) => setFace(value as CardFace)}>
           <TabsList>
             <TabsTrigger value="front">Front</TabsTrigger>
             <TabsTrigger value="back">Back</TabsTrigger>
