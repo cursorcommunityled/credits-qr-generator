@@ -55,7 +55,7 @@ export const QrCardBack = forwardRef<HTMLDivElement, QrCardBackProps>(function Q
                 aria-hidden="true"
               />
               <span
-                className="text-[10px] font-medium"
+                className="text-[14px]"
                 style={{ color: tokens.mutedForeground }}
               >
                 {eventName}
