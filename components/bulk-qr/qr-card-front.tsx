@@ -88,15 +88,15 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
           >
             <li className="flex gap-1">
               <Step n={1} tokens={tokens} />
-              <span>Open the camera and scan the QR.</span>
+              <span>Scan the QR code.</span>
             </li>
             <li className="flex gap-1">
               <Step n={2} tokens={tokens} />
-              <span>Sign in to your Cursor account.</span>
+              <span>Sign in to Cursor.</span>
             </li>
             <li className="flex gap-1">
               <Step n={3} tokens={tokens} />
-              <span>Credits are added automatically.</span>
+              <span>Credits auto-applied.</span>
             </li>
           </ol>
         </div>
