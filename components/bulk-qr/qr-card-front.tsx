@@ -77,18 +77,9 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
               className="flex flex-col gap-1 text-[8px] leading-snug"
               style={{ color: tokens.foreground }}
             >
-              <li className="flex gap-1">
-                <Step n={1} tokens={tokens} />
-                <span>Scan QR.</span>
-              </li>
-              <li className="flex gap-1">
-                <Step n={2} tokens={tokens} />
-                <span>Sign in.</span>
-              </li>
-              <li className="flex gap-1">
-                <Step n={3} tokens={tokens} />
-                <span>Redeem.</span>
-              </li>
+              <StepItem n={1} label="Scan QR." tokens={tokens} />
+              <StepItem n={2} label="Sign in." tokens={tokens} />
+              <StepItem n={3} label="Redeem." tokens={tokens} />
             </ol>
           </div>
 
@@ -126,14 +117,19 @@ function stripProtocol(url: string): string {
   return url.replace(/^https?:\/\//i, "").replace(/\/$/, "")
 }
 
-function Step({ n, tokens }: { n: number; tokens: CardColorTokens }) {
+function StepItem({
+  n,
+  label,
+  tokens,
+}: {
+  n: number
+  label: string
+  tokens: CardColorTokens
+}) {
   return (
-    <span
-      className="mt-[1px] flex h-3 w-3 shrink-0 items-center justify-center rounded-full text-[7px] font-semibold"
-      style={{ background: tokens.accent, color: tokens.container }}
-      aria-hidden="true"
-    >
-      {n}
-    </span>
+    <li>
+      <span style={{ color: tokens.mutedForeground }}>{n}.</span>{" "}
+      <span>{label}</span>
+    </li>
   )
 }
