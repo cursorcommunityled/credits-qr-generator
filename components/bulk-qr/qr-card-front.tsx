@@ -44,8 +44,8 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
         className="grid h-full w-full border"
         style={{
           // minmax(0, Xfr) prevents intrinsic content width (the QR) from
-          // overriding the 70/30 ratio and forcing its column to expand.
-          gridTemplateColumns: "minmax(0, 7fr) minmax(0, 3fr)",
+          // overriding the 60/40 ratio and forcing its column to expand.
+          gridTemplateColumns: "minmax(0, 6fr) minmax(0, 4fr)",
           background: tokens.container,
           borderColor: tokens.border,
         }}
