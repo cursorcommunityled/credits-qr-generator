@@ -41,61 +41,75 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
       data-card-face="front"
     >
       <div
-        className="grid h-full w-full border"
+        className="flex h-full w-full flex-col border"
         style={{
-          // minmax(0, Xfr) prevents intrinsic content width (the QR) from
-          // overriding the 60/40 ratio and forcing its column to expand.
-          gridTemplateColumns: "minmax(0, 6fr) minmax(0, 4fr)",
           background: tokens.container,
           borderColor: tokens.border,
         }}
       >
-        {/* Left: Instructions */}
-        <div className="flex h-full flex-col justify-center gap-3 py-3.5 pl-3.5">
-          <div className="flex flex-col gap-0.5">
-            <span
-              className="text-[8px] font-medium uppercase tracking-[0.14em]"
-              style={{ color: tokens.mutedForeground }}
+        {/* Top row: instructions + QR */}
+        <div
+          className="grid min-h-0 flex-1"
+          style={{
+            // minmax(0, Xfr) prevents intrinsic content width (the QR) from
+            // overriding the 60/40 ratio and forcing its column to expand.
+            gridTemplateColumns: "minmax(0, 6fr) minmax(0, 4fr)",
+          }}
+        >
+          {/* Left: Instructions */}
+          <div className="flex h-full flex-col justify-center gap-3 py-3.5 pl-3.5">
+            <div className="flex flex-col gap-0.5">
+              <span
+                className="text-[8px] font-medium uppercase tracking-[0.14em]"
+                style={{ color: tokens.mutedForeground }}
+              >
+                Cursor credits
+              </span>
+              <h2
+                className="text-balance text-[13px] font-semibold leading-tight"
+                style={{ color: tokens.accent }}
+              >
+                Scan to redeem
+              </h2>
+            </div>
+
+            <ol
+              className="flex flex-col gap-1 text-[9px] leading-snug"
+              style={{ color: tokens.foreground }}
             >
-              Cursor credits
-            </span>
-            <h2
-              className="text-balance text-[13px] font-semibold leading-tight"
-              style={{ color: tokens.accent }}
-            >
-              Scan to redeem
-            </h2>
+              <li className="flex gap-1">
+                <Step n={1} tokens={tokens} />
+                <span>Scan QR.</span>
+              </li>
+              <li className="flex gap-1">
+                <Step n={2} tokens={tokens} />
+                <span>Sign in.</span>
+              </li>
+              <li className="flex gap-1">
+                <Step n={3} tokens={tokens} />
+                <span>Redeem.</span>
+              </li>
+            </ol>
           </div>
 
-          <ol
-            className="flex flex-col gap-1 text-[9px] leading-snug"
-            style={{ color: tokens.foreground }}
-          >
-            <li className="flex gap-1">
-              <Step n={1} tokens={tokens} />
-              <span>Scan QR.</span>
-            </li>
-            <li className="flex gap-1">
-              <Step n={2} tokens={tokens} />
-              <span>Sign in.</span>
-            </li>
-            <li className="flex gap-1">
-              <Step n={3} tokens={tokens} />
-              <span>Redeem.</span>
-            </li>
-          </ol>
+          {/* Right: QR */}
+          <div className="flex min-w-0 items-center justify-center px-1 py-3">
+            <QrCode
+              value={code.url}
+              size={QR_SIZE}
+              style={config.qrStyle}
+              theme={config.theme}
+            />
+          </div>
         </div>
 
-        {/* Right: QR + fallback URL */}
-        <div className="flex min-w-0 flex-col items-center justify-center gap-1.5 px-1 py-3">
-          <QrCode
-            value={code.url}
-            size={QR_SIZE}
-            style={config.qrStyle}
-            theme={config.theme}
-          />
+        {/* Bottom row: raw link spans full card width */}
+        <div
+          className="flex items-center justify-center border-t px-2 py-1.5"
+          style={{ borderColor: tokens.border }}
+        >
           <span
-            className="max-w-full break-all text-center font-mono text-[6px] leading-tight"
+            className="max-w-full truncate text-center font-mono text-[7px] leading-tight"
             style={{ color: tokens.accent }}
             title={code.url}
           >
