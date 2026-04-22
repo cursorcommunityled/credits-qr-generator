@@ -13,6 +13,13 @@ interface QrCodeProps {
 }
 
 /**
+ * Internal render resolution for the QR. We render at a high resolution and
+ * let CSS scale it down so dots/edges stay crisp regardless of the final
+ * `size` prop. 1024 is plenty for both on-screen preview and print export.
+ */
+const RENDER_SIZE = 1024
+
+/**
  * Builds a monochrome SVG of the Cursor mark for embedding at the center
  * of the QR code. Returns a data URL so `qr-code-styling` can consume it.
  *
@@ -23,8 +30,6 @@ interface QrCodeProps {
 function buildLogoDataUrl(theme: CardTheme): string {
   const bg = theme === "dark" ? "#ffffff" : "#0a0a0a"
   const fg = theme === "dark" ? "#0a0a0a" : "#ffffff"
-  // 160×160 badge with a 132×150 mark centered inside (leaves padding).
-  // Mark offset: x = (160-88)/2 = 36, y = (160-100)/2 = 30, mark scaled to 88×100.
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
       <circle cx="80" cy="80" r="76" fill="${bg}" />
@@ -37,75 +42,93 @@ function buildLogoDataUrl(theme: CardTheme): string {
   return `data:image/svg+xml;base64,${window.btoa(svg)}`
 }
 
+type QrDotType = "dots" | "square"
+type QrCornerSquareType = "extra-rounded" | "square"
+type QrCornerDotType = "dot" | "square"
+
+interface QrStyleVariant {
+  dots: QrDotType
+  cornersSquare: QrCornerSquareType
+  cornersDot: QrCornerDotType
+}
+
+function getStyleVariant(style: QrStyle): QrStyleVariant {
+  if (style === "dots") {
+    return { dots: "dots", cornersSquare: "extra-rounded", cornersDot: "dot" }
+  }
+  return { dots: "square", cornersSquare: "square", cornersDot: "square" }
+}
+
 export function QrCode({ value, size, style, theme, className }: QrCodeProps) {
   const hostRef = useRef<HTMLDivElement | null>(null)
-  const instanceRef = useRef<unknown>(null)
 
   useEffect(() => {
     let cancelled = false
+    const host = hostRef.current
+    if (!host) return
 
     async function render() {
-      const host = hostRef.current
-      if (!host) return
-
       const { default: QRCodeStyling } = await import("qr-code-styling")
-      if (cancelled) return
+      if (cancelled || !host) return
 
       const isDark = theme === "dark"
       const dark = "#0a0a0a"
       const light = "#ffffff"
+      const fg = isDark ? light : dark
+      const variant = getStyleVariant(style)
 
       const options = {
-        width: size,
-        height: size,
+        // SVG output is resolution-independent — CSS resizes it cleanly.
+        type: "svg" as const,
+        width: RENDER_SIZE,
+        height: RENDER_SIZE,
         data: value,
         margin: 0,
         qrOptions: {
           errorCorrectionLevel: "H" as const,
         },
         dotsOptions: {
-          type: (style === "dots" ? "dots" : "square") as "dots" | "square",
-          color: isDark ? light : dark,
+          type: variant.dots,
+          color: fg,
         },
         backgroundOptions: {
           color: "transparent",
         },
         cornersSquareOptions: {
-          type: (style === "dots" ? "extra-rounded" : "square") as
-            | "extra-rounded"
-            | "square",
-          color: isDark ? light : dark,
+          type: variant.cornersSquare,
+          color: fg,
         },
         cornersDotOptions: {
-          type: (style === "dots" ? "dot" : "square") as "dot" | "square",
-          color: isDark ? light : dark,
+          type: variant.cornersDot,
+          color: fg,
         },
         image: buildLogoDataUrl(theme),
         imageOptions: {
           hideBackgroundDots: true,
-          imageSize: 0.28,
-          margin: 2,
+          imageSize: 0.26,
+          margin: 4,
           crossOrigin: "anonymous" as const,
         },
       }
 
       type QRCtor = new (opts: unknown) => {
         append: (el: HTMLElement) => void
-        update: (opts: unknown) => void
       }
       const Ctor = QRCodeStyling as unknown as QRCtor
+      const instance = new Ctor(options)
 
-      const existing = instanceRef.current as
-        | { update: (opts: unknown) => void }
-        | null
+      // Always recreate: qr-code-styling's `update()` does not reliably
+      // swap dot/corner types between "dots" and "square".
+      host.innerHTML = ""
+      instance.append(host)
 
-      if (existing) {
-        existing.update(options)
-      } else {
-        const instance = new Ctor(options)
-        host.innerHTML = ""
-        instance.append(host)
-        instanceRef.current = instance
+      // Force the rendered SVG to fill the host so CSS can scale it down.
+      const svg = host.querySelector("svg")
+      if (svg) {
+        svg.setAttribute("width", "100%")
+        svg.setAttribute("height", "100%")
+        svg.setAttribute("preserveAspectRatio", "xMidYMid meet")
+        svg.style.display = "block"
       }
     }
 
@@ -113,12 +136,12 @@ export function QrCode({ value, size, style, theme, className }: QrCodeProps) {
     return () => {
       cancelled = true
     }
-  }, [value, size, style, theme])
+  }, [value, style, theme])
 
   return (
     <div
       ref={hostRef}
-      className={cn("flex items-center justify-center", className)}
+      className={cn("flex items-center justify-center overflow-hidden", className)}
       style={{ width: size, height: size }}
       aria-label="QR code"
     />
