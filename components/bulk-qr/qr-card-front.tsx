@@ -77,9 +77,17 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
               className="flex flex-col gap-1 text-[7px] leading-snug"
               style={{ color: tokens.foreground }}
             >
-              <StepItem n={1} label="Scan QR." tokens={tokens} />
-              <StepItem n={2} label="Sign in." tokens={tokens} />
-              <StepItem n={3} label="Redeem." tokens={tokens} />
+              <StepItem n={1} label="Scan the QR." tokens={tokens} />
+              <StepItem
+                n={2}
+                label="Sign in (personal account, not Team)."
+                tokens={tokens}
+              />
+              <StepItem
+                n={3}
+                label="Redeem — applies to your next invoice."
+                tokens={tokens}
+              />
             </ol>
           </div>
 
