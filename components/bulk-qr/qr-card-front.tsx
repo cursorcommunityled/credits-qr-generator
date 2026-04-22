@@ -31,7 +31,7 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
   return (
     <div
       ref={ref}
-      className={cn("relative overflow-hidden p-2", className)}
+      className={cn("relative overflow-hidden p-2 tracking-[-0.07em]", className)}
       style={{
         width: CARD_WIDTH,
         height: CARD_HEIGHT,
@@ -60,7 +60,7 @@ export const QrCardFront = forwardRef<HTMLDivElement, QrCardFrontProps>(function
           <div className="flex h-full flex-col justify-center gap-3 py-3.5 pl-3.5">
             <div className="flex flex-col gap-0.5">
               <span
-                className="text-[8px] font-medium uppercase tracking-[0.14em]"
+                className="text-[8px] font-medium uppercase"
                 style={{ color: tokens.mutedForeground }}
               >
                 Cursor credits
