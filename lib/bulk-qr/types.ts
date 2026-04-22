@@ -63,6 +63,13 @@ export const CARD_WIDTH = 249
 export const CARD_HEIGHT = 165
 
 /**
+ * Aspect ratio (width / height) of a single card. The printed card preserves
+ * this exactly so the design never gets distorted — users configure width,
+ * height is derived from it.
+ */
+export const CARD_ASPECT = CARD_WIDTH / CARD_HEIGHT
+
+/**
  * Size of the QR code rendered on the front of the card.
  * Must fit inside the QR column (30% of ~231px inner width ≈ 69px).
  */
