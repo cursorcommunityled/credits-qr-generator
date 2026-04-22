@@ -44,8 +44,8 @@ const DARK_CARD_TOKENS: CardColorTokens = {
 
 const LIGHT_CARD_TOKENS: CardColorTokens = {
   background: "#FAFAF9",
-  container: "#E7E5E4",
-  border: "#A6A09B",
+  container: "#F5F5F4",
+  border: "#D6D3D1",
   foreground: "#0C0A09",
   mutedForeground: "#57534D",
   accent: "#CE530D",
