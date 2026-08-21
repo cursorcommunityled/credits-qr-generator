@@ -41,7 +41,8 @@ export async function zipCards(assets: CardAsset[]): Promise<Blob> {
   const zip = new JSZip()
   const fronts = zip.folder('fronts')
   for (const asset of assets) {
-    fronts?.file(asset.fileName, asset.blob)
+    const fileName = sanitizeFileSegment(asset.fileName.replace(/\.[^.]+$/, '')) || 'code'
+    fronts?.file(`${fileName}.png`, asset.blob)
   }
   return zip.generateAsync({ type: 'blob' })
 }
